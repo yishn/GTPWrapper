@@ -9,7 +9,7 @@ namespace GTPWrapper {
     /// <summary>
     /// Represents a GTP engine.
     /// </summary>
-    public class GTPEngine {
+    public class Engine {
         /// <summary>
         /// Fired when there is a new command in the queue.
         /// </summary>
@@ -23,7 +23,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Initializes a new instance of the GTPEngine class.
         /// </summary>
-        public GTPEngine() {
+        public Engine() {
             this.CommandQueue = new Queue<Command>();
         }
 
