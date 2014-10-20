@@ -10,16 +10,14 @@ namespace GTPWrapper {
         /// <summary>
         /// Fired when there is a new command in the queue.
         /// </summary>
-        public event EventHandler<CommandEventArgs> GotInput;
+        public event EventHandler<CommandEventArgs> NewCommand;
 
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
         public Queue<Command> CommandQueue { get; private set; }
-        public TextReader Input { get; private set; }
-        public TextWriter Output { get; private set; }
 
-        public GTPEngine(TextReader input, TextWriter output) {
+        public GTPEngine() {
             this.CommandQueue = new Queue<Command>();
         }
 
@@ -28,10 +26,10 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="input">Command string</param>
         public void Command(string input) {
-            Command cmd = new Command(input);
-            this.CommandQueue.Enqueue(cmd);
+            Command command = new Command(input);
+            this.CommandQueue.Enqueue(command);
 
-            if (GotInput != null) GotInput(this, new CommandEventArgs(cmd));
+            if (NewCommand != null) NewCommand(this, new CommandEventArgs(command));
         }
     }
 }
