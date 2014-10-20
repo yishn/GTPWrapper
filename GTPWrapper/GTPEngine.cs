@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GTPWrapper {
+    /// <summary>
+    /// Represents a GTP engine.
+    /// </summary>
     public class GTPEngine {
         /// <summary>
         /// Fired when there is a new command in the queue.
@@ -17,6 +20,9 @@ namespace GTPWrapper {
         /// </summary>
         public Queue<Command> CommandQueue { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the GTPEngine class.
+        /// </summary>
         public GTPEngine() {
             this.CommandQueue = new Queue<Command>();
         }

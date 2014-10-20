@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 
 namespace GTPWrapper {
+    /// <summary>
+    /// Represents a GTP command.
+    /// </summary>
     public class Command {
         /// <summary>
         /// An optional command id.
@@ -19,7 +22,7 @@ namespace GTPWrapper {
         public List<string> Arguments { get; private set; }
 
         /// <summary>
-        /// Represents a GTP command.
+        /// Initializes a new instance of the Command class.
         /// </summary>
         /// <param name="input">A string of the form "[id] command_name [arguments]"</param>
         public Command(string input) {
@@ -38,7 +41,7 @@ namespace GTPWrapper {
             this.Arguments = new List<string>(inputs.Skip(start + 1));
         }
         /// <summary>
-        /// Represents a GTP command.
+        /// Initializes a new instance of the Command class.
         /// </summary>
         /// <param name="id">An optional command id.</param>
         /// <param name="commandName">The name of the command.</param>
