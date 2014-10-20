@@ -9,15 +9,15 @@ namespace GTPWrapper {
     /// </summary>
     public class Command {
         /// <summary>
-        /// An optional command id.
+        /// Gets an optional command id.
         /// </summary>
         public int? Id { get; private set; }
         /// <summary>
-        /// The name of the command.
+        /// Gets the name of the command.
         /// </summary>
         public string CommandName { get; private set; }
         /// <summary>
-        /// A list of arguments.
+        /// Gets a list of arguments.
         /// </summary>
         public List<string> Arguments { get; private set; }
 
@@ -50,6 +50,18 @@ namespace GTPWrapper {
             this.Id = id;
             this.CommandName = commandName;
             this.Arguments = arguments.Split(' ').ToList<string>();
+        }
+
+        /// <summary>
+        /// Returns a GTP-compliant string
+        /// </summary>
+        public override string ToString() {
+            string result = "";
+
+            result += this.Id.HasValue ? this.Id.ToString() : "";
+            result += " " + this.CommandName + " " + string.Join(" ", this.Arguments);
+
+            return result;
         }
     }
 }
