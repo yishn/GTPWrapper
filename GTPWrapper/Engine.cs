@@ -26,7 +26,7 @@ namespace GTPWrapper {
         public Dictionary<Command, Response> ResponseList { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the GTPEngine class.
+        /// Initializes a new instance of the Engine class.
         /// </summary>
         public Engine() {
             this.CommandQueue = new Queue<Command>();

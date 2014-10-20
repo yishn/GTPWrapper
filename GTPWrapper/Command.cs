@@ -9,6 +9,10 @@ namespace GTPWrapper {
     /// </summary>
     public class Command {
         /// <summary>
+        /// Determines whether the command is a comment or not.
+        /// </summary>
+        public bool IsComment { get; private set; }
+        /// <summary>
         /// Gets an optional command id.
         /// </summary>
         public int? Id { get; private set; }
@@ -26,6 +30,8 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="input">A string of the form "[id] command_name [arguments]"</param>
         public Command(string input) {
+            input = input.Trim();
+
             int id, start;
             string[] inputs = input.Split(' ');
 
