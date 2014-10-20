@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GTPWrapper {
-    public class GTPWrapper {
+    public class GTPEngine {
         /// <summary>
         /// Fired when there is a new command in the queue.
         /// </summary>
         public event EventHandler<CommandEventArgs> GotInput;
+
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
         public Queue<Command> CommandQueue { get; private set; }
+        public TextReader Input { get; private set; }
+        public TextWriter Output { get; private set; }
 
-        public GTPWrapper() {
+        public GTPEngine(TextReader input, TextWriter output) {
             this.CommandQueue = new Queue<Command>();
         }
 
