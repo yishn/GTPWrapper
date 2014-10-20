@@ -9,7 +9,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Fired when there is a new command in the queue.
         /// </summary>
-        public event EventHandler GotInput;
+        public event EventHandler<CommandEventArgs> GotInput;
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
@@ -24,8 +24,10 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="input">Command string</param>
         public void Command(string input) {
-            this.CommandQueue.Enqueue(new Command(input));
-            if (GotInput != null) GotInput(this, new EventArgs());
+            Command cmd = new Command(input);
+            this.CommandQueue.Enqueue(cmd);
+
+            if (GotInput != null) GotInput(this, new CommandEventArgs(cmd));
         }
     }
 }
