@@ -13,10 +13,10 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
-        public Queue<GTPCommand> CommandQueue { get; private set; }
+        public Queue<Command> CommandQueue { get; private set; }
 
         public GTPWrapper() {
-            this.CommandQueue = new Queue<GTPCommand>();
+            this.CommandQueue = new Queue<Command>();
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="input">Command string</param>
         public void Command(string input) {
-            this.CommandQueue.Enqueue(new GTPCommand(input));
+            this.CommandQueue.Enqueue(new Command(input));
             if (GotInput != null) GotInput(this, new EventArgs());
         }
     }

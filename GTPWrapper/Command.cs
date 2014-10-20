@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace GTPWrapper {
-    public class GTPCommand {
+    public class Command {
         /// <summary>
         /// An optional command id.
         /// </summary>
@@ -22,7 +22,7 @@ namespace GTPWrapper {
         /// Represents a GTP command.
         /// </summary>
         /// <param name="input">A string of the form "[id] command_name [arguments]"</param>
-        public GTPCommand(string input) {
+        public Command(string input) {
             int id, start;
             string[] inputs = input.Split(' ');
 
@@ -43,7 +43,7 @@ namespace GTPWrapper {
         /// <param name="id">An optional command id.</param>
         /// <param name="commandName">The name of the command.</param>
         /// <param name="arguments">A list of arguments, separated by spaces.</param>
-        public GTPCommand(int? id, string commandName, string arguments) {
+        public Command(int? id, string commandName, string arguments) {
             this.Id = id;
             this.CommandName = commandName;
             this.Arguments = arguments.Split(' ').ToList<string>();
