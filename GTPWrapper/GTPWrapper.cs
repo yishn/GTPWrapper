@@ -11,7 +11,7 @@ namespace GTPWrapper {
         }
 
         public string Command(string input) {
-            return "";
+            return "=";
         }
     }
 }
