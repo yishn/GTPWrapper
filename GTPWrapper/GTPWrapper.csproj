@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
+    <Compile Include="ResponseEventArgs.cs" />
     <Compile Include="CommandEventArgs.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
