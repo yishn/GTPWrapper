@@ -9,10 +9,6 @@ namespace GTPWrapper {
     /// </summary>
     public class Command {
         /// <summary>
-        /// Determines whether the command is a comment or not.
-        /// </summary>
-        public bool IsComment { get; private set; }
-        /// <summary>
         /// Gets an optional command id.
         /// </summary>
         public int? Id { get; private set; }
