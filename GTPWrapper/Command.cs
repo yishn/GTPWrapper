@@ -15,7 +15,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets the name of the command.
         /// </summary>
-        public string CommandName { get; private set; }
+        public string Name { get; private set; }
         /// <summary>
         /// Gets a list of arguments.
         /// </summary>
@@ -29,7 +29,7 @@ namespace GTPWrapper {
             input = input.Trim();
 
             int id, start;
-            string[] inputs = input.Split(' ');
+            string[] inputs = input.Split(' ').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
             if (int.TryParse(inputs[0], out id)) {
                 start = 1;
@@ -39,18 +39,18 @@ namespace GTPWrapper {
                 this.Id = null;
             }
 
-            this.CommandName = inputs[start];
+            this.Name = inputs[start];
             this.Arguments = new List<string>(inputs.Skip(start + 1));
         }
         /// <summary>
         /// Initializes a new instance of the Command class.
         /// </summary>
         /// <param name="id">An optional command id.</param>
-        /// <param name="commandName">The name of the command.</param>
+        /// <param name="name">The name of the command.</param>
         /// <param name="arguments">A list of arguments, separated by spaces.</param>
-        public Command(int? id, string commandName, string arguments) {
+        public Command(int? id, string name, string arguments) {
             this.Id = id;
-            this.CommandName = commandName;
+            this.Name = name;
             this.Arguments = arguments.Split(' ').ToList<string>();
         }
 
@@ -61,7 +61,7 @@ namespace GTPWrapper {
             string result = "";
 
             result += this.Id.HasValue ? this.Id.ToString() : "";
-            result += " " + this.CommandName + " " + string.Join(" ", this.Arguments);
+            result += " " + this.Name + " " + string.Join(" ", this.Arguments);
 
             return result;
         }

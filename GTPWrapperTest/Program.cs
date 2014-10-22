@@ -14,13 +14,13 @@ namespace GTPWrapperTest {
 
             while (true) {
                 string input = Console.ReadLine();
-                engine.AddCommand(new Command(input));
+                engine.ParseString(input);
             }
         }
 
         static void engine_NewCommand(object sender, CommandEventArgs e) {
             Engine engine = (Engine)sender;
-            engine.PushResponse(new Response(e.Command, false, e.Command.CommandName));
+            engine.PushResponse(new Response(e.Command, e.Command.Name == "error", e.Command.Name));
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {

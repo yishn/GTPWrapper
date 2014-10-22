@@ -43,6 +43,22 @@ namespace GTPWrapper {
         }
 
         /// <summary>
+        /// Parses a string and adds each command to the queue.
+        /// </summary>
+        /// <param name="input">The string to be parsed.</param>
+        public void ParseString(string input) {
+            string[] lines = input.Split('\n');
+
+            foreach (string l in lines) {
+                string line = l.Trim();
+                if (line == "" || line.StartsWith("#")) continue;
+                if (line.IndexOf('#') >= 0) line = line.Substring(0, line.IndexOf('#'));
+
+                this.AddCommand(new Command(line));
+            }
+        }
+
+        /// <summary>
         /// Pushes a response to the list and removes the associated command from the queue.
         /// </summary>
         /// <param name="response">The response to add to list.</param>
