@@ -58,7 +58,8 @@ namespace GTPWrapper {
                 this.CommandQueue.Dequeue();
                 if (ResponsePushed != null) ResponsePushed(this, new ResponseEventArgs(r));
 
-                c = this.CommandQueue.Count > 0 ? this.CommandQueue.Peek() : null;
+                if (this.CommandQueue.Count == 0) break;
+                c = this.CommandQueue.Peek();
             }
         }
     }
