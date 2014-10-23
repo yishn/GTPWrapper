@@ -22,11 +22,11 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
-        public Queue<Command> CommandQueue { get; private set; }
+        public Queue<Command> CommandQueue;
         /// <summary>
         /// Gets the list of all available responses.
         /// </summary>
-        public Dictionary<Command, Response> ResponseList { get; private set; }
+        public Dictionary<Command, Response> ResponseList;
 
         /// <summary>
         /// Initializes a new instance of the Engine class.
