@@ -9,7 +9,10 @@ namespace GTPWrapper.DataTypes {
     /// Represents a Go board.
     /// </summary>
     public class Board {
-        private Dictionary<Vertex, Sign> arrangement = new Dictionary<Vertex, Sign>();
+        /// <summary>
+        /// Contains pairs of vertex and sign with invertible sign.
+        /// </summary>
+        protected Dictionary<Vertex, Sign> Arrangement = new Dictionary<Vertex, Sign>();
 
         /// <summary>
         /// The letters in a vertex string, i.e. the letters A to Z, excluding I.
@@ -42,7 +45,7 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         public Sign GetSign(Vertex vertex) {
-            return !arrangement.ContainsKey(vertex) ? 0 : arrangement[vertex];
+            return !Arrangement.ContainsKey(vertex) ? 0 : Arrangement[vertex];
         }
         /// <summary>
         /// Sets the sign at the given vertex.
@@ -50,7 +53,35 @@ namespace GTPWrapper.DataTypes {
         /// <param name="vertex">The vertex.</param>
         /// <param name="sign">The sign.</param>
         public void SetSign(Vertex vertex, Sign sign) {
-            arrangement[vertex] = sign;
+            Arrangement[vertex] = sign;
         }
+
+        #region Operators
+        
+        public static Board operator +(Board b1, Board b2) {
+            Board board = new Board(Math.Max(b1.Size, b2.Size));
+
+            foreach (Vertex v in b1.Arrangement.Keys.Union(b2.Arrangement.Keys)) {
+                board.SetSign(v, b1.GetSign(v) + b2.GetSign(v));
+            }
+
+            return board;
+        }
+
+        public static Board operator *(Sign sign, Board b) {
+            Board board = new Board(b.Size);
+
+            foreach (Vertex v in b.Arrangement.Keys) {
+                board.SetSign(v, sign * b.GetSign(v));
+            }
+
+            return board;
+        }
+
+        public static Board operator -(Board b1, Board b2) {
+            return -1 * b2 + b1;
+        }
+
+        #endregion
     }
 }
