@@ -24,12 +24,12 @@ namespace GTPWrapper.DataTypes {
             return new Sign(s1.Value + s2.Value);
         }
 
-        public static Sign operator -(Sign s1, Sign s2) {
-            return new Sign(s1.Value - s2.Value);
+        public static Sign operator -(Sign s) {
+            return new Sign(-s.Value);
         }
 
-        public static Sign operator *(Sign s1, Sign s2) {
-            return new Sign(s1.Value * s2.Value);
+        public static Sign operator -(Sign s1, Sign s2) {
+            return -s2 + s1;
         }
 
         public static implicit operator Sign(int value) {

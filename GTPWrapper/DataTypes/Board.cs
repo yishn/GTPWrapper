@@ -68,18 +68,18 @@ namespace GTPWrapper.DataTypes {
             return board;
         }
 
-        public static Board operator *(Sign sign, Board b) {
+        public static Board operator -(Board b) {
             Board board = new Board(b.Size);
 
             foreach (Vertex v in b.Arrangement.Keys) {
-                board.SetSign(v, sign * b.GetSign(v));
+                board.SetSign(v, -b.GetSign(v));
             }
 
             return board;
         }
 
         public static Board operator -(Board b1, Board b2) {
-            return -1 * b2 + b1;
+            return -b2 + b1;
         }
 
         #endregion
