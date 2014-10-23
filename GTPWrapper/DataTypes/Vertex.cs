@@ -33,8 +33,16 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The board coordinate consisting of one letter and one number.</param>
         public Vertex(string vertex) {
-            this.X = 0;
-            this.Y = 0;
+            this.Y = Board.Letters.IndexOf(vertex.ToUpper()[0]) + 1;
+            if (this.Y == 0 || !int.TryParse(vertex.Substring(1), out this.X)) 
+                throw new System.FormatException("This is not a valid vertex string.");
+        }
+
+        /// <summary>
+        /// Returns the vertex string.
+        /// </summary>
+        public override string ToString() {
+            return Board.Letters[this.Y - 1] + this.X.ToString();
         }
     }
 }

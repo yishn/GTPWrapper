@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace GTPWrapper.DataTypes {
     public class Board {
-
+        public static string Letters = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
     }
 }

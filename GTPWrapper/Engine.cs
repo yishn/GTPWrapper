@@ -14,6 +14,9 @@ namespace GTPWrapper {
         /// Fired when there is a new command in the queue.
         /// </summary>
         public event EventHandler<CommandEventArgs> NewCommand;
+        /// <summary>
+        /// Fired when there is a response ready.
+        /// </summary>
         public event EventHandler<ResponseEventArgs> ResponsePushed;
 
         /// <summary>
