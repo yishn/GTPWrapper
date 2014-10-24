@@ -9,6 +9,8 @@ namespace GTPWrapper.DataTypes {
     /// Represents a Go board.
     /// </summary>
     public class Board {
+        private Dictionary<Vertex, Vertex> ChainAnchor = new Dictionary<Vertex, Vertex>();
+
         /// <summary>
         /// Contains pairs of vertex and sign with invertible sign.
         /// </summary>
@@ -46,6 +48,34 @@ namespace GTPWrapper.DataTypes {
                 new Vertex(vertex.X, vertex.Y - 1),
                 new Vertex(vertex.X, vertex.Y + 1)
             }.Where(v => this.HasVertex(v)).ToArray();
+        }
+
+        /// <summary>
+        /// Gets the corresponding chain of a given vertex.
+        /// </summary>
+        /// <param name="vertex">The vertex.</param>
+        /// <param name="result">A list of all chained vertices.</param>
+        public List<Vertex> GetChain(Vertex vertex, List<Vertex> result = null) {
+            // If calculated already, load from ChainAnchor
+            if (ChainAnchor.ContainsKey(vertex)) {                
+                return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]).ToList();
+            }
+
+            // Recursive depth-first search
+            if (result == null) {
+                result = new List<Vertex>();
+                ChainAnchor[vertex] = vertex;
+            }
+
+            foreach (Vertex v in GetNeighborhood(vertex)) {
+                if (GetSign(v) != GetSign(vertex)) continue;
+                if (ChainAnchor.ContainsKey(v)) continue;
+
+                ChainAnchor[v] = ChainAnchor[vertex];
+                result.Add(v);
+            }
+
+            return result;
         }
 
         /// <summary>
