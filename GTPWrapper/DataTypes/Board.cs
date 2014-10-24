@@ -42,6 +42,8 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         public Vertex[] GetNeighborhood(Vertex vertex) {
+            if (!HasVertex(vertex)) return new Vertex[] { };
+
             return new Vertex[] {
                 new Vertex(vertex.X - 1, vertex.Y),
                 new Vertex(vertex.X + 1, vertex.Y),
@@ -56,6 +58,8 @@ namespace GTPWrapper.DataTypes {
         /// <param name="vertex">The vertex.</param>
         /// <param name="result">A list of all chained vertices.</param>
         public List<Vertex> GetChain(Vertex vertex, List<Vertex> result = null) {
+            if (!HasVertex(vertex)) return new List<Vertex>();
+
             // If calculated already, load from ChainAnchor
             if (ChainAnchor.ContainsKey(vertex)) {                
                 return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]).ToList();
