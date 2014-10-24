@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 namespace GTPWrapperTest {
     public class Program {
         static void Main(string[] args) {
-            Board b = new Board(9);
-            Console.WriteLine(b.GetChain(new Vertex(1, 1)));
-
             Engine engine = new Engine();
             engine.NewCommand += engine_NewCommand;
             engine.ResponsePushed += engine_ResponsePushed;

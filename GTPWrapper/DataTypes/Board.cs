@@ -60,23 +60,25 @@ namespace GTPWrapper.DataTypes {
         public List<Vertex> GetChain(Vertex vertex, List<Vertex> result = null) {
             if (!HasVertex(vertex)) return new List<Vertex>();
 
-            // If calculated already, load from ChainAnchor
-            if (ChainAnchor.ContainsKey(vertex)) {                
-                return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]).ToList();
-            }
-
-            // Recursive depth-first search
             if (result == null) {
+                // If calculated already, load from ChainAnchor
+                if (ChainAnchor.ContainsKey(vertex)) {                
+                    return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]).ToList();
+                }
+
                 result = new List<Vertex>();
+                result.Add(vertex);
                 ChainAnchor[vertex] = vertex;
             }
 
+            // Recursive depth-first search
             foreach (Vertex v in GetNeighborhood(vertex)) {
                 if (GetSign(v) != GetSign(vertex)) continue;
                 if (ChainAnchor.ContainsKey(v)) continue;
 
                 ChainAnchor[v] = ChainAnchor[vertex];
                 result.Add(v);
+                GetChain(v, result);
             }
 
             return result;
@@ -96,6 +98,7 @@ namespace GTPWrapper.DataTypes {
         /// <param name="sign">The sign.</param>
         public void SetSign(Vertex vertex, Sign sign) {
             Arrangement[vertex] = sign;
+            ChainAnchor.Clear();
         }
 
         #region Operators
