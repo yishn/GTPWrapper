@@ -20,6 +20,14 @@ namespace GTPWrapper.DataTypes {
             this.Value = this.Value == 2 ? -1 : this.Value == -2 ? 1 : this.Value;
         }
 
+        public override int GetHashCode() {
+            return ((int)this).GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            return obj.Equals(this);
+        }
+
         public static Sign operator +(Sign s1, Sign s2) {
             return new Sign(s1.Value + s2.Value);
         }
@@ -30,6 +38,14 @@ namespace GTPWrapper.DataTypes {
 
         public static Sign operator -(Sign s1, Sign s2) {
             return -s2 + s1;
+        }
+
+        public static bool operator ==(Sign s1, Sign s2) {
+            return (int)s1 == (int)s2;
+        }
+
+        public static bool operator !=(Sign s1, Sign s2) {
+            return (int)s1 != (int)s2;
         }
 
         public static implicit operator Sign(int value) {
