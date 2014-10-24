@@ -47,6 +47,8 @@ namespace GTPWrapper.DataTypes {
         /// Returns the vertex string.
         /// </summary>
         public override string ToString() {
+            if (this.Y >= Vertex.Letters.Length)
+                throw new System.FormatException("This is not a valid vertex string.");
             return Vertex.Letters[this.Y - 1] + this.X.ToString();
         }
     }
