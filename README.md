@@ -6,4 +6,4 @@ The Go Text Protocol or GTP is used by Go playing engines to communicate between
 License
 -------
 
-This work is licensed under the terms of the MIT license.
+This work is licensed under the terms of the MIT license. See LICENSE.txt.
