@@ -15,11 +15,6 @@ namespace GTPWrapper.DataTypes {
         protected Dictionary<Vertex, Sign> Arrangement = new Dictionary<Vertex, Sign>();
 
         /// <summary>
-        /// The letters in a vertex string, i.e. the letters A to Z, excluding I.
-        /// </summary>
-        public static string Letters = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
-
-        /// <summary>
         /// Gets or sets the size of the board. Usually 19.
         /// </summary>
         public int Size { get; set; }
