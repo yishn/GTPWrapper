@@ -36,6 +36,19 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
+        /// Gets a list of adjacent vertices of a given vertex.
+        /// </summary>
+        /// <param name="vertex">The vertex.</param>
+        public Vertex[] GetNeighborhood(Vertex vertex) {
+            return new Vertex[] {
+                new Vertex(vertex.X - 1, vertex.Y),
+                new Vertex(vertex.X + 1, vertex.Y),
+                new Vertex(vertex.X, vertex.Y - 1),
+                new Vertex(vertex.X, vertex.Y + 1)
+            }.Where(v => this.HasVertex(v)).ToArray();
+        }
+
+        /// <summary>
         /// Gets the sign at the given vertex.
         /// </summary>
         /// <param name="vertex">The vertex.</param>

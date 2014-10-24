@@ -47,7 +47,7 @@ namespace GTPWrapper.DataTypes {
         /// Returns the vertex string.
         /// </summary>
         public override string ToString() {
-            if (this.Y >= Vertex.Letters.Length)
+            if (this.Y >= Vertex.Letters.Length || Math.Min(this.X, this.Y) <= 0)
                 return "";
             return Vertex.Letters[this.Y - 1] + this.X.ToString();
         }
