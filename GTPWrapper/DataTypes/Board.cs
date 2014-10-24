@@ -32,15 +32,7 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         public bool HasVertex(Vertex vertex) {
-            return HasVertex(vertex.X, vertex.Y);
-        }
-        /// <summary>
-        /// Determines whether the given vertex is on the board or not.
-        /// </summary>
-        /// <param name="x">The x coordinate of the vertex.</param>
-        /// <param name="y">The y coordinate of the vertex.</param>
-        public bool HasVertex(int x, int y) {
-            return 1 <= Math.Min(x, y) && Math.Max(x, y) <= this.Size;
+            return 1 <= Math.Min(vertex.X, vertex.Y) && Math.Max(vertex.X, vertex.Y) <= this.Size;
         }
 
         /// <summary>
@@ -51,29 +43,12 @@ namespace GTPWrapper.DataTypes {
             return !Arrangement.ContainsKey(vertex) ? 0 : Arrangement[vertex];
         }
         /// <summary>
-        /// Gets the sign at the given vertex.
-        /// </summary>
-        /// <param name="x">The x coordinate of the vertex.</param>
-        /// <param name="y">The y coordinate of the vertex.</param>
-        public Sign GetSign(int x, int y) {
-            return GetSign(new Vertex(x, y));
-        }
-        /// <summary>
         /// Sets the sign at the given vertex.
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         /// <param name="sign">The sign.</param>
         public void SetSign(Vertex vertex, Sign sign) {
             Arrangement[vertex] = sign;
-        }
-        /// <summary>
-        /// Sets the sign at the given vertex.
-        /// </summary>
-        /// <param name="x">The x coordinate of the vertex.</param>
-        /// <param name="y">The y coordinate of the vertex.</param>
-        /// <param name="sign">The sign.</param>
-        public void SetSign(int x, int y, Sign sign) {
-            SetSign(new Vertex(x, y), sign);
         }
 
         #region Operators
