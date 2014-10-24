@@ -51,5 +51,25 @@ namespace GTPWrapper.DataTypes {
                 return "";
             return Vertex.Letters[this.Y - 1] + this.X.ToString();
         }
+
+        #region Operators
+
+        public override int GetHashCode() {
+            return this.X.GetHashCode() ^ this.Y.GetHashCode();
+        }
+
+        public override bool Equals(object obj) {
+            return obj is Vertex && this == (Vertex)obj;
+        }
+
+        public static bool operator ==(Vertex v1, Vertex v2) {
+            return v1.X == v2.X && v1.Y == v2.Y;
+        }
+
+        public static bool operator !=(Vertex v1, Vertex v2) {
+            return !(v1 == v2);
+        }
+
+        #endregion
     }
 }

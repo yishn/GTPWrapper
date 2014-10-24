@@ -20,12 +20,14 @@ namespace GTPWrapper.DataTypes {
             this.Value = this.Value == 2 ? -1 : this.Value == -2 ? 1 : this.Value;
         }
 
+        #region Operators
+
         public override int GetHashCode() {
             return ((int)this).GetHashCode();
         }
 
         public override bool Equals(object obj) {
-            return obj.Equals(this);
+            return obj is Sign && this == (Sign)obj;
         }
 
         public static Sign operator +(Sign s1, Sign s2) {
@@ -63,5 +65,7 @@ namespace GTPWrapper.DataTypes {
         public static explicit operator Color(Sign sign) {
             return (Color)sign.Value;
         }
+
+        #endregion
     }
 }
