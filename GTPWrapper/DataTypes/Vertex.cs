@@ -38,8 +38,8 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The board coordinate consisting of one letter and one number.</param>
         public Vertex(string vertex) {
-            this.Y = Vertex.Letters.IndexOf(vertex.ToUpper()[0]) + 1;
-            if (this.Y == 0 || !int.TryParse(vertex.Substring(1), out this.X)) 
+            this.X = Vertex.Letters.IndexOf(vertex.ToUpper()[0]) + 1;
+            if (this.X == 0 || !int.TryParse(vertex.Substring(1), out this.Y)) 
                 throw new System.FormatException("This is not a valid vertex string.");
         }
 
@@ -47,9 +47,9 @@ namespace GTPWrapper.DataTypes {
         /// Returns the vertex string.
         /// </summary>
         public override string ToString() {
-            if (this.Y >= Vertex.Letters.Length || Math.Min(this.X, this.Y) <= 0)
+            if (this.X >= Vertex.Letters.Length || Math.Min(this.X, this.Y) <= 0)
                 return "";
-            return Vertex.Letters[this.Y - 1] + this.X.ToString();
+            return Vertex.Letters[this.X - 1] + this.Y.ToString();
         }
 
         #region Operators
