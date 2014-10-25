@@ -10,6 +10,7 @@ namespace GTPWrapper.DataTypes {
     /// </summary>
     public class Board {
         private Dictionary<Vertex, Vertex> ChainAnchor = new Dictionary<Vertex, Vertex>();
+        private Dictionary<Vertex, List<Vertex>> Liberties = new Dictionary<Vertex, List<Vertex>>();
 
         /// <summary>
         /// Contains pairs of vertex and sign with invertible sign.
@@ -85,6 +86,28 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
+        /// Gets the list of liberties of the chain represented by the given vertex.
+        /// </summary>
+        /// <param name="vertex">A vertex which represents the chain.</param>
+        public List<Vertex> GetLiberties(Vertex vertex) {
+            if (GetSign(vertex) == 0) return new List<Vertex>();
+            // If calculated already, load from Liberties
+            if (ChainAnchor.ContainsKey(vertex) && Liberties.ContainsKey(ChainAnchor[vertex])) {
+                return Liberties[ChainAnchor[vertex]];
+            }
+
+            List<Vertex> chain = GetChain(vertex);
+            IEnumerable<Vertex> liberties = new List<Vertex>();
+
+            foreach (Vertex c in chain) {
+                liberties = liberties.Union(GetNeighborhood(c).Where(x => GetSign(x) == 0));
+            }
+
+            Liberties[ChainAnchor[vertex]] = liberties.ToList();
+            return Liberties[ChainAnchor[vertex]];
+        }
+
+        /// <summary>
         /// Gets the sign at the given vertex.
         /// </summary>
         /// <param name="vertex">The vertex.</param>
@@ -99,6 +122,7 @@ namespace GTPWrapper.DataTypes {
         public void SetSign(Vertex vertex, Sign sign) {
             Arrangement[vertex] = sign;
             ChainAnchor.Clear();
+            Liberties.Clear();
         }
 
         #region Operators
