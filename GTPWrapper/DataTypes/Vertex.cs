@@ -70,6 +70,10 @@ namespace GTPWrapper.DataTypes {
             return !(v1 == v2);
         }
 
+        public static implicit operator Vertex(string value) {
+            return new Vertex(value);
+        }
+
         #endregion
     }
 }
