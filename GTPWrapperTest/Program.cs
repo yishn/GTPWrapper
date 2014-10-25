@@ -25,9 +25,15 @@ namespace GTPWrapperTest {
 
             if (e.Command.Name == "showboard") {
                 response = new Board(19).ToString();
+            } else if (e.Command.Name == "quit") {
+                response = "";
             }
 
             engine.PushResponse(new Response(e.Command, e.Command.Name == "error", response));
+
+            if (e.Command.Name == "quit") {
+                Environment.Exit(0);
+            }
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {

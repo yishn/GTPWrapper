@@ -193,21 +193,23 @@ namespace GTPWrapper.DataTypes {
         public List<Vertex> GetHandicapPlacement(int count) {
             if (this.Size < 6 || count < 2) return new List<Vertex>();
 
-            int edgeDist = this.Size >= 13 ? 4 : 3;
+            int near = this.Size >= 13 ? 4 : 3;
+            int far = this.Size + 1 - near;
+
             List<Vertex> result = new List<Vertex>(new Vertex[] {
-                new Vertex(edgeDist, edgeDist), new Vertex(this.Size + 1 - edgeDist, this.Size + 1 - edgeDist),
-                new Vertex(edgeDist, this.Size + 1 - edgeDist), new Vertex(this.Size + 1 - edgeDist, edgeDist)
+                new Vertex(near, near), new Vertex(far, far),
+                new Vertex(near, far), new Vertex(far, near)
             });
 
             if (this.Size % 2 != 0) {
                 int middle = (this.Size + 1) / 2;
                 if (count == 5) result.Add(new Vertex(middle, middle));
                 result.AddRange(new Vertex[] { 
-                    new Vertex(edgeDist, middle), new Vertex(this.Size + 1 - edgeDist, middle) 
+                    new Vertex(near, middle), new Vertex(far, middle) 
                 });
                 if (count == 7) result.Add(new Vertex(middle, middle));
                 else result.AddRange(new Vertex[] { 
-                    new Vertex(middle, edgeDist), new Vertex(middle, this.Size + 1 - edgeDist), new Vertex(middle, middle) 
+                    new Vertex(middle, near), new Vertex(middle, far), new Vertex(middle, middle) 
                 });
             }
 
