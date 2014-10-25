@@ -208,7 +208,7 @@ namespace GTPWrapper.DataTypes {
                     new Vertex(near, middle), new Vertex(far, middle) 
                 });
                 if (count == 7) result.Add(new Vertex(middle, middle));
-                else result.AddRange(new Vertex[] { 
+                result.AddRange(new Vertex[] { 
                     new Vertex(middle, near), new Vertex(middle, far), new Vertex(middle, middle) 
                 });
             }

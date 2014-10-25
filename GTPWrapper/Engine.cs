@@ -20,6 +20,10 @@ namespace GTPWrapper {
         public event EventHandler<ResponseEventArgs> ResponsePushed;
 
         /// <summary>
+        /// Gets the list of supported command names.
+        /// </summary>
+        public List<string> SupportedCommands;
+        /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
         public Queue<Command> CommandQueue;
@@ -32,6 +36,10 @@ namespace GTPWrapper {
         /// Initializes a new instance of the Engine class.
         /// </summary>
         public Engine() {
+            this.SupportedCommands = new List<string>(new string[] {
+                "protocol_version", "name", "version", "known_command", "list_commands", "quit", "boardsize",
+                "clear_board", "komi", "play", "genmove"
+            });
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
         }
