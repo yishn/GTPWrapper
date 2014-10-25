@@ -152,5 +152,33 @@ namespace GTPWrapper.DataTypes {
         }
 
         #endregion
+
+        public override string ToString() {
+            string result = "";
+
+            for (int y = this.Size + 1; y >= 0; y--) {
+                if (y == 0 || y == this.Size + 1) {
+                    result += "\n   ";
+                    for (int i = 0; i < this.Size; i++) {
+                        result += " " + Vertex.Letters[i];
+                    }
+                    continue;
+                }
+
+                result += "\n";
+                for (int x = 0; x <= this.Size + 1; x++) {
+                    if (x == 0 || x == this.Size + 1) {
+                        result += x != 0 || y.ToString().Length == 2 ? " " : "  ";
+                        result += y.ToString();
+                        continue;
+                    }
+
+                    char c = GetSign(new Vertex(x, y)) == 1 ? 'X' : GetSign(new Vertex(x, y)) == -1 ? 'O' : '.';
+                    result += " " + c;
+                }
+            }
+
+            return result;
+        }
     }
 }

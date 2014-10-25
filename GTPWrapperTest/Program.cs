@@ -21,7 +21,13 @@ namespace GTPWrapperTest {
 
         static void engine_NewCommand(object sender, CommandEventArgs e) {
             Engine engine = (Engine)sender;
-            engine.PushResponse(new Response(e.Command, e.Command.Name == "error", e.Command.Name));
+            string response = e.Command.Name;
+
+            if (e.Command.Name == "showboard") {
+                response = new Board(19).ToString();
+            }
+
+            engine.PushResponse(new Response(e.Command, e.Command.Name == "error", response));
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {
