@@ -153,8 +153,12 @@ namespace GTPWrapper.DataTypes {
 
         #endregion
 
+        /// <summary>
+        /// A string that represents the current board position.
+        /// </summary>
         public override string ToString() {
             string result = "";
+            List<Vertex> hoshi = GetHandicapPlacement(9);
 
             for (int y = this.Size + 1; y >= 0; y--) {
                 if (y == 0 || y == this.Size + 1) {
@@ -174,11 +178,40 @@ namespace GTPWrapper.DataTypes {
                     }
 
                     char c = GetSign(new Vertex(x, y)) == 1 ? 'X' : GetSign(new Vertex(x, y)) == -1 ? 'O' : '.';
+                    if (c == '.' && hoshi.Contains(new Vertex(x, y))) c = '+';
                     result += " " + c;
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets fixed placement of handicap stones.
+        /// </summary>
+        /// <param name="count">The number of handicap stones. Between 2 and 9.</param>
+        public List<Vertex> GetHandicapPlacement(int count) {
+            if (this.Size < 6 || count < 2) return new List<Vertex>();
+
+            int edgeDist = this.Size >= 13 ? 4 : 3;
+            List<Vertex> result = new List<Vertex>(new Vertex[] {
+                new Vertex(edgeDist, edgeDist), new Vertex(this.Size + 1 - edgeDist, this.Size + 1 - edgeDist),
+                new Vertex(edgeDist, this.Size + 1 - edgeDist), new Vertex(this.Size + 1 - edgeDist, edgeDist)
+            });
+
+            if (this.Size % 2 != 0) {
+                int middle = (this.Size + 1) / 2;
+                if (count == 5) result.Add(new Vertex(middle, middle));
+                result.AddRange(new Vertex[] { 
+                    new Vertex(edgeDist, middle), new Vertex(this.Size + 1 - edgeDist, middle) 
+                });
+                if (count == 7) result.Add(new Vertex(middle, middle));
+                else result.AddRange(new Vertex[] { 
+                    new Vertex(middle, edgeDist), new Vertex(middle, this.Size + 1 - edgeDist), new Vertex(middle, middle) 
+                });
+            }
+
+            return result.Take(count).ToList();
         }
     }
 }
