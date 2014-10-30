@@ -12,11 +12,16 @@ namespace GTPWrapperTest {
             Engine engine = new Engine();
             engine.NewCommand += engine_NewCommand;
             engine.ResponsePushed += engine_ResponsePushed;
+            engine.ConnectionClosed += engine_ConnectionClosed;
 
             while (true) {
                 string input = Console.ReadLine();
                 engine.ParseString(input);
             }
+        }
+
+        static void engine_ConnectionClosed(object sender, EventArgs e) {
+            Environment.Exit(0);
         }
 
         static void engine_NewCommand(object sender, CommandEventArgs e) {
@@ -25,15 +30,9 @@ namespace GTPWrapperTest {
 
             if (e.Command.Name == "showboard") {
                 response = new Board(19).ToString();
-            } else if (e.Command.Name == "quit") {
-                response = "";
             }
 
-            engine.PushResponse(new Response(e.Command, e.Command.Name == "error", response));
-
-            if (e.Command.Name == "quit") {
-                Environment.Exit(0);
-            }
+            engine.PushResponse(new Response(e.Command, response, e.Command.Name == "error"));
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {

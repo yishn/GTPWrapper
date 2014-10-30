@@ -28,7 +28,7 @@ namespace GTPWrapper {
         /// <param name="command">The associated command.</param>
         /// <param name="isError">Determines whether the response is an error or not.</param>
         /// <param name="content">The content of the response.</param>
-        public Response(Command command, bool isError, string content) {
+        public Response(Command command, string content = "", bool isError = false) {
             this.Command = command;
             this.IsError = isError;
             this.Content = content;

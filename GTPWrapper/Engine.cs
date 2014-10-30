@@ -18,6 +18,10 @@ namespace GTPWrapper {
         /// Fired when there is a response ready.
         /// </summary>
         public event EventHandler<ResponseEventArgs> ResponsePushed;
+        /// <summary>
+        /// Fired when the command 'quit' is received.
+        /// </summary>
+        public event EventHandler ConnectionClosed;
 
         /// <summary>
         /// Gets the list of supported command names.
@@ -42,6 +46,8 @@ namespace GTPWrapper {
             });
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
+
+            this.NewCommand += Engine_NewCommand;
         }
 
         /// <summary>
@@ -87,6 +93,25 @@ namespace GTPWrapper {
 
                 if (this.CommandQueue.Count == 0) break;
                 c = this.CommandQueue.Peek();
+            }
+        }
+
+        /// <summary>
+        /// Ends the connection. Corresponds to 'quit'.
+        /// </summary>
+        public void Quit() {
+            if (ConnectionClosed != null) ConnectionClosed(this, new EventArgs());
+        }
+
+        private void Engine_NewCommand(object sender, CommandEventArgs e) {
+            switch (e.Command.Name) { 
+                case "quit":
+                    this.PushResponse(new Response(e.Command));
+                    Quit();
+                    break;
+                case "list_commands":
+                    this.PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
+                    break;
             }
         }
     }
