@@ -48,7 +48,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Initializes a new instance of the Engine class.
         /// </summary>
-        public Engine(string name, string version) {
+        public Engine(string name, string version = "") {
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit", "boardsize",
                 "clear_board", "komi", "play", "genmove"
