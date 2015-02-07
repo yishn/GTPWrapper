@@ -117,7 +117,10 @@ namespace GTPWrapper {
                     PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
                     break;
                 case "known_command":
-                    PushResponse(new Response(e.Command, SupportedCommands.Contains(e.Command.Arguments[0]) ? "true" : "false"));
+                    PushResponse(new Response(
+                        e.Command,
+                        e.Command.Arguments.Count > 0 && SupportedCommands.Contains(e.Command.Arguments[0]) ? "true" : "false"
+                    ));
                     break;
                 case "quit":
                     PushResponse(new Response(e.Command));
