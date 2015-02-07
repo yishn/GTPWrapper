@@ -56,15 +56,13 @@ namespace GTPWrapper {
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
             this.SupportedCommands = new List<string>(new string[] {
-                "protocol_version", "name", "version", "known_command", "list_commands", "quit", "boardsize",
-                "clear_board", "komi", "play", "genmove"
+                "protocol_version", "name", "version", "known_command", "list_commands", "quit",
+                "boardsize", "clear_board", "komi", "play", "genmove"
             });
 
             this.Name = name;
             this.Version = version;
             this.Enabled = true;
-
-            this.NewCommand += Engine_NewCommand;
         }
 
         /// <summary>
@@ -117,43 +115,48 @@ namespace GTPWrapper {
         }
 
         /// <summary>
+        /// Executes all commands in the command queue.
+        /// </summary>
+        public void ExecuteCommands() {
+            while (CommandQueue.Count > 0) {
+                Response response = ExecuteCommand(CommandQueue.Peek());
+                PushResponse(response);
+            }
+        }
+
+        /// <summary>
+        /// Executes a command and returns a corresponding response.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        protected virtual Response ExecuteCommand(Command command) {
+            switch (command.Name) {
+                case "protocol_version":
+                    return new Response(command, "2");
+                case "name":
+                    return new Response(command, this.Name.Replace('\n', ' '));
+                case "version":
+                    return new Response(command, this.Version.Replace('\n', ' '));
+                case "list_commands":
+                    return new Response(command, string.Join("\n", this.SupportedCommands));
+                case "known_command":
+                    return new Response(
+                        command,
+                        command.Arguments.Count > 0 && SupportedCommands.Contains(command.Arguments[0]) ? "true" : "false"
+                    );
+                case "quit":
+                    Quit();
+                    return new Response(command);
+            }
+
+            return new Response(command, "unknown command", true);
+        }
+
+        /// <summary>
         /// Ends the connection. Corresponds to 'quit'.
         /// </summary>
         public void Quit() {
             this.Enabled = false;
             if (ConnectionClosed != null) ConnectionClosed(this, new EventArgs());
-        }
-
-        private void Engine_NewCommand(object sender, CommandEventArgs e) {
-            if (!SupportedCommands.Contains(e.Command.Name)) {
-                this.PushResponse(new Response(e.Command, "unknown command", true));
-                return;
-            }
-
-            switch (e.Command.Name) { 
-                case "protocol_version":
-                    PushResponse(new Response(e.Command, "2"));
-                    break;
-                case "name":
-                    PushResponse(new Response(e.Command, this.Name.Replace('\n', ' ')));
-                    break;
-                case "version":
-                    PushResponse(new Response(e.Command, this.Version.Replace('\n', ' ')));
-                    break;
-                case "list_commands":
-                    PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
-                    break;
-                case "known_command":
-                    PushResponse(new Response(
-                        e.Command,
-                        e.Command.Arguments.Count > 0 && SupportedCommands.Contains(e.Command.Arguments[0]) ? "true" : "false"
-                    ));
-                    break;
-                case "quit":
-                    PushResponse(new Response(e.Command));
-                    Quit();
-                    break;
-            }
         }
     }
 }
