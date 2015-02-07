@@ -127,10 +127,10 @@ namespace GTPWrapper {
                     PushResponse(new Response(e.Command, "2"));
                     break;
                 case "name":
-                    PushResponse(new Response(e.Command, this.Name));
+                    PushResponse(new Response(e.Command, this.Name.Replace('\n', ' ')));
                     break;
                 case "version":
-                    PushResponse(new Response(e.Command, this.Version));
+                    PushResponse(new Response(e.Command, this.Version.Replace('\n', ' ')));
                     break;
                 case "list_commands":
                     PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
