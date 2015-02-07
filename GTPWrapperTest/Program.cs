@@ -1,5 +1,4 @@
 ﻿using GTPWrapper;
-using GTPWrapper.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +8,10 @@ using System.Threading.Tasks;
 namespace GTPWrapperTest {
     public class Program {
         static void Main(string[] args) {
-            Engine engine = new Engine("GTP\nWrapper\nTest", "1");
+            TestEngine engine = new TestEngine();
             engine.NewCommand += engine_NewCommand;
             engine.ResponsePushed += engine_ResponsePushed;
             engine.ConnectionClosed += engine_ConnectionClosed;
-
-            engine.SupportedCommands.AddRange(new string[] { "showboard", "error" });
 
             while (true) {
                 string input = Console.ReadLine();
@@ -27,18 +24,12 @@ namespace GTPWrapperTest {
         }
 
         static void engine_NewCommand(object sender, CommandEventArgs e) {
-            Engine engine = (Engine)sender;
-            string response = e.Command.Name;
-
-            if (e.Command.Name == "showboard") {
-                response = new Board(13).ToString();
-            }
-
-            engine.PushResponse(new Response(e.Command, response, e.Command.Name == "error"));
+            TestEngine engine = (TestEngine)sender;
+            engine.ExecuteCommands();
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {
-            Console.Write(e.Response.ToString() + "\n\n");
+            Console.WriteLine(e.Response.ToString() + "\n");
         }
     }
 }
