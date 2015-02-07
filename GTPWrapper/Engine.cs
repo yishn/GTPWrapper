@@ -74,8 +74,10 @@ namespace GTPWrapper {
             this.ResponseList = new Dictionary<Command, Response>();
             this.MoveHistory = new List<Board>();
 
-            this.Captures = new Dictionary<Color, int>();
-            this.Captures[Color.Black] = this.Captures[Color.White] = 0;
+            this.Captures = new Dictionary<Color, int>() {
+                { Color.Black, 0 },
+                { Color.White, 0 }
+            };
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
