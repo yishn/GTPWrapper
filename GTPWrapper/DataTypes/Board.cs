@@ -91,6 +91,7 @@ namespace GTPWrapper.DataTypes {
         /// <param name="vertex">A vertex which represents the chain.</param>
         public List<Vertex> GetLiberties(Vertex vertex) {
             if (GetSign(vertex) == 0) return new List<Vertex>();
+
             // If calculated already, load from Liberties
             if (ChainAnchor.ContainsKey(vertex) && Liberties.ContainsKey(ChainAnchor[vertex])) {
                 return Liberties[ChainAnchor[vertex]];
@@ -119,7 +120,10 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         /// <param name="sign">The sign.</param>
+        /// <exception cref="System.InvalidOperationException">Thrown when the vertex is not on the board.</exception>
         public void SetSign(Vertex vertex, Sign sign) {
+            if (!HasVertex(vertex)) throw new InvalidOperationException("Vertex is not on the board.");
+
             Arrangement[vertex] = sign;
             ChainAnchor.Clear();
             Liberties.Clear();
@@ -172,7 +176,7 @@ namespace GTPWrapper.DataTypes {
                 result += "\n";
                 for (int x = 0; x <= this.Size + 1; x++) {
                     if (x == 0 || x == this.Size + 1) {
-                        result += x != 0 || y.ToString().Length == 2 ? " " : "  ";
+                        result += x != 0 || y >= 10 ? " " : "  ";
                         result += y.ToString();
                         continue;
                     }
