@@ -44,20 +44,25 @@ namespace GTPWrapper {
         /// Gets or sets the version of the engine.
         /// </summary>
         public string Version { get; set; }
+        /// <summary>
+        /// Gets or sets whether the engine is accepting commands.
+        /// </summary>
+        public bool Enabled { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the Engine class.
         /// </summary>
         public Engine(string name, string version = "") {
+            this.CommandQueue = new Queue<Command>();
+            this.ResponseList = new Dictionary<Command, Response>();
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit", "boardsize",
                 "clear_board", "komi", "play", "genmove"
             });
-            this.CommandQueue = new Queue<Command>();
-            this.ResponseList = new Dictionary<Command, Response>();
 
             this.Name = name;
             this.Version = version;
+            this.Enabled = true;
 
             this.NewCommand += Engine_NewCommand;
         }
@@ -67,6 +72,8 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="command">The command to add to queue.</param>
         public void AddCommand(Command command) {
+            if (!Enabled) return;
+
             this.CommandQueue.Enqueue(command);
             if (NewCommand != null) NewCommand(this, new CommandEventArgs(command));
         }
@@ -113,6 +120,7 @@ namespace GTPWrapper {
         /// Ends the connection. Corresponds to 'quit'.
         /// </summary>
         public void Quit() {
+            this.Enabled = false;
             if (ConnectionClosed != null) ConnectionClosed(this, new EventArgs());
         }
 
