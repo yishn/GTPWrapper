@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GTPWrapper.DataTypes;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,6 +36,14 @@ namespace GTPWrapper {
         /// Gets the list of all available responses.
         /// </summary>
         public Dictionary<Command, Response> ResponseList;
+        /// <summary>
+        /// Gets a list of past moves.
+        /// </summary>
+        public List<Board> MoveHistory;
+        /// <summary>
+        /// Gets the number of captured stones by given color.
+        /// </summary>
+        public Dictionary<Color, int> Captures;
 
         /// <summary>
         /// Gets or sets the name of the engine.
@@ -48,6 +57,14 @@ namespace GTPWrapper {
         /// Gets or sets whether the engine is accepting commands.
         /// </summary>
         public bool Enabled { get; set; }
+        /// <summary>
+        /// Gets or sets the board size.
+        /// </summary>
+        public int BoardSize { get; set; }
+        /// <summary>
+        /// Gets or sets the komi.
+        /// </summary>
+        public float Komi { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the Engine class.
@@ -55,6 +72,11 @@ namespace GTPWrapper {
         public Engine(string name, string version = "") {
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
+            this.MoveHistory = new List<Board>();
+
+            this.Captures = new Dictionary<Color, int>();
+            this.Captures[Color.Black] = this.Captures[Color.White] = 0;
+
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
                 "boardsize", "clear_board", "komi", "play", "genmove"
@@ -146,6 +168,26 @@ namespace GTPWrapper {
                 case "quit":
                     Quit();
                     return new Response(command);
+                case "boardsize":
+                    try {
+                        this.BoardSize = int.Parse(command.Arguments[0]);
+                        return new Response(command);
+                    } catch {}
+
+                    return new Response(command, "unacceptable size", true);
+                case "clear_board":
+                    this.MoveHistory.Clear();
+                    this.MoveHistory.Add(new Board(this.BoardSize));
+                    this.Captures[Color.Black] = this.Captures[Color.White] = 0;
+
+                    return new Response(command);
+                case "komi":
+                    try {
+                        this.Komi = float.Parse(command.Arguments[0]);
+                        return new Response(command);
+                    } catch {}
+
+                    return new Response(command, "syntax error", true);
             }
 
             return new Response(command, "unknown command", true);
