@@ -14,6 +14,8 @@ namespace GTPWrapperTest {
             engine.ResponsePushed += engine_ResponsePushed;
             engine.ConnectionClosed += engine_ConnectionClosed;
 
+            engine.SupportedCommands.AddRange(new string[] { "showboard", "error" });
+
             while (true) {
                 string input = Console.ReadLine();
                 engine.ParseString(input);
@@ -29,7 +31,7 @@ namespace GTPWrapperTest {
             string response = e.Command.Name;
 
             if (e.Command.Name == "showboard") {
-                response = new Board(19).ToString();
+                response = new Board(13).ToString();
             }
 
             engine.PushResponse(new Response(e.Command, response, e.Command.Name == "error"));
