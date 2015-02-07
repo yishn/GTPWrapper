@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GTPWrapperTest {
     public class Program {
         static void Main(string[] args) {
-            Engine engine = new Engine();
+            Engine engine = new Engine("GTPWrapperTest", "1");
             engine.NewCommand += engine_NewCommand;
             engine.ResponsePushed += engine_ResponsePushed;
             engine.ConnectionClosed += engine_ConnectionClosed;

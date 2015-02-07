@@ -36,16 +36,22 @@ namespace GTPWrapper {
         /// </summary>
         public Dictionary<Command, Response> ResponseList;
 
+        public string Name { get; set; }
+        public string Version { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the Engine class.
         /// </summary>
-        public Engine() {
+        public Engine(string name, string version) {
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit", "boardsize",
                 "clear_board", "komi", "play", "genmove"
             });
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
+
+            this.Name = name;
+            this.Version = version;
 
             this.NewCommand += Engine_NewCommand;
         }
@@ -112,6 +118,12 @@ namespace GTPWrapper {
             switch (e.Command.Name) { 
                 case "protocol_version":
                     PushResponse(new Response(e.Command, "2"));
+                    break;
+                case "name":
+                    PushResponse(new Response(e.Command, this.Name));
+                    break;
+                case "version":
+                    PushResponse(new Response(e.Command, this.Version));
                     break;
                 case "list_commands":
                     PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
