@@ -13,7 +13,7 @@ namespace GTPWrapper.DataTypes {
         private Dictionary<Vertex, List<Vertex>> Liberties = new Dictionary<Vertex, List<Vertex>>();
 
         /// <summary>
-        /// Contains pairs of vertex and sign with invertible sign.
+        /// Contains pairs of vertex and signs.
         /// </summary>
         protected Dictionary<Vertex, Sign> Arrangement = new Dictionary<Vertex, Sign>();
 

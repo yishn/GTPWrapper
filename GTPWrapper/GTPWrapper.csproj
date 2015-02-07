@@ -41,6 +41,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="DataTypes\Board.cs" />
     <Compile Include="DataTypes\Color.cs" />
+    <Compile Include="DataTypes\Move.cs" />
     <Compile Include="DataTypes\Sign.cs" />
     <Compile Include="DataTypes\Vertex.cs" />
     <Compile Include="ResponseEventArgs.cs" />
