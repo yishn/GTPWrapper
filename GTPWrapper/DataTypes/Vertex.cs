@@ -13,6 +13,7 @@ namespace GTPWrapper.DataTypes {
         /// The letters in a vertex string, i.e. the letters A to Z, excluding I.
         /// </summary>
         public static string Letters = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+        public static Vertex Pass = new Vertex(0, 0);
 
         /// <summary>
         /// Gets or sets the x coordinate of the point.
@@ -38,6 +39,12 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The board coordinate consisting of one letter and one number.</param>
         public Vertex(string vertex) {
+            if (vertex == "pass") {
+                this.X = 0;
+                this.Y = 0;
+                return;
+            }
+
             this.X = Vertex.Letters.IndexOf(vertex.ToUpper()[0]) + 1;
             if (this.X == 0 || !int.TryParse(vertex.Substring(1), out this.Y)) 
                 throw new System.FormatException("This is not a valid vertex string.");
@@ -47,8 +54,9 @@ namespace GTPWrapper.DataTypes {
         /// Returns the vertex string.
         /// </summary>
         public override string ToString() {
-            if (this.X >= Vertex.Letters.Length || Math.Min(this.X, this.Y) <= 0)
-                return "";
+            if (this == Vertex.Pass) return "pass";
+            if (this.X >= Vertex.Letters.Length || Math.Min(this.X, this.Y) <= 0) return "";
+
             return Vertex.Letters[this.X - 1] + this.Y.ToString();
         }
 
