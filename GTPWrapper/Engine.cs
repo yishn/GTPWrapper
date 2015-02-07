@@ -110,12 +110,18 @@ namespace GTPWrapper {
             }
 
             switch (e.Command.Name) { 
-                case "quit":
-                    this.PushResponse(new Response(e.Command));
-                    Quit();
+                case "protocol_version":
+                    PushResponse(new Response(e.Command, "2"));
                     break;
                 case "list_commands":
-                    this.PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
+                    PushResponse(new Response(e.Command, string.Join("\n", this.SupportedCommands)));
+                    break;
+                case "known_command":
+                    PushResponse(new Response(e.Command, SupportedCommands.Contains(e.Command.Arguments[0]) ? "true" : "false"));
+                    break;
+                case "quit":
+                    PushResponse(new Response(e.Command));
+                    Quit();
                     break;
             }
         }
