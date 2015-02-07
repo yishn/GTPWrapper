@@ -40,14 +40,13 @@ namespace GTPWrapper.DataTypes {
         /// <param name="vertex">The board coordinate consisting of one letter and one number.</param>
         public Vertex(string vertex) {
             if (vertex == "pass") {
-                this.X = 0;
-                this.Y = 0;
+                this = Vertex.Pass;
                 return;
             }
 
             this.X = Vertex.Letters.IndexOf(vertex.ToUpper()[0]) + 1;
             if (this.X == 0 || !int.TryParse(vertex.Substring(1), out this.Y)) 
-                throw new System.FormatException("This is not a valid vertex string.");
+                throw new FormatException("This is not a valid vertex string.");
         }
 
         /// <summary>
