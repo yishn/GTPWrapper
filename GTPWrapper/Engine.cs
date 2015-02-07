@@ -104,6 +104,11 @@ namespace GTPWrapper {
         }
 
         private void Engine_NewCommand(object sender, CommandEventArgs e) {
+            if (!SupportedCommands.Contains(e.Command.Name)) {
+                this.PushResponse(new Response(e.Command, "unknown command", true));
+                return;
+            }
+
             switch (e.Command.Name) { 
                 case "quit":
                     this.PushResponse(new Response(e.Command));
