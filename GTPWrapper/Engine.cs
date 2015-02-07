@@ -87,6 +87,7 @@ namespace GTPWrapper {
         /// <param name="response">The response to add to list.</param>
         public void PushResponse(Response response) {
             if (this.CommandQueue.Count == 0) return;
+            if (!this.CommandQueue.Contains(response.Command)) return;
 
             this.ResponseList.Add(response.Command, response);
             Command c = this.CommandQueue.Peek();
