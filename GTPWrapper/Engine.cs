@@ -194,7 +194,10 @@ namespace GTPWrapper {
                         return new Response(command, "illegal move", true);
                     }
                 case "showboard":
-                    return new Response(command, this.Board.ToString());
+                    string result = this.Board.ToString() + "\n\n";
+                    result += "(X) captured " + this.Board.Captures[Color.Black] + "\n";
+                    result += "(O) captured " + this.Board.Captures[Color.White];
+                    return new Response(command, result);
             }
 
             return new Response(command, "unknown command", true);
