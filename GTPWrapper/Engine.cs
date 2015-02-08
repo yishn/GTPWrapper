@@ -72,7 +72,7 @@ namespace GTPWrapper {
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
-                "boardsize", "clear_board", "komi", "play", "genmove"
+                "boardsize", "clear_board", "komi", "play", "genmove", "showboard"
             });
 
             this.Name = name;
@@ -193,6 +193,8 @@ namespace GTPWrapper {
                     } catch (InvalidOperationException) {
                         return new Response(command, "illegal move", true);
                     }
+                case "showboard":
+                    return new Response(command, this.Board.ToString());
             }
 
             return new Response(command, "unknown command", true);
