@@ -72,7 +72,7 @@ namespace GTPWrapper {
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
-                "boardsize", "clear_board", "komi", "fixed_handicap",
+                "boardsize", "clear_board", "komi", "fixed_handicap", "set_free_handicap",
                 "play", "genmove", "showboard"
             });
 
@@ -185,15 +185,35 @@ namespace GTPWrapper {
                     return new Response(command, "syntax error", true);
                 case "fixed_handicap":
                     if (!this.Board.IsEmpty()) return new Response(command, "board not empty", true);
+
                     try {
                         int count = int.Parse(command.Arguments[0]);
+                        if (count < 2 || count > 9 || this.Board.Size < 7)
+                            return new Response(command, "invalid number of stones", true);
+
                         foreach (Vertex v in Board.GetHandicapPlacement(count)) {
                             Board.SetSign(v, 1);
                         }
                         return new Response(command);
-                    } catch {
-                        return new Response(command, "syntax error", true);
-                    }
+                    } catch {}
+                    
+                    return new Response(command, "syntax error", true);
+                case "set_free_handicap":
+                    if (!this.Board.IsEmpty()) return new Response(command, "board not empty", true);
+
+                    try {
+                        List<Vertex> vs = new List<Vertex>();
+                        foreach (string input in command.Arguments) {
+                            Vertex v = new Vertex(input);
+                            if (v == Vertex.Pass || vs.Contains(v)) return new Response(command, "bad vertex list", true);
+                            vs.Add(v);
+                        }
+
+                        foreach (Vertex v in vs) this.Board.SetSign(v, 1);
+                        return new Response(command);
+                    } catch {}
+
+                    return new Response(command, "syntax error", true);
                 case "play":
                     try {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
