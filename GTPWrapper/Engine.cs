@@ -40,10 +40,6 @@ namespace GTPWrapper {
         /// Gets a list of past moves.
         /// </summary>
         public List<Move> MoveHistory;
-        /// <summary>
-        /// Gets the number of captured stones by given color.
-        /// </summary>
-        public Dictionary<Color, int> Captures;
 
         /// <summary>
         /// Gets or sets the name of the engine.
@@ -73,11 +69,6 @@ namespace GTPWrapper {
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
             this.MoveHistory = new List<Move>();
-
-            this.Captures = new Dictionary<Color, int>() {
-                { Color.Black, 0 },
-                { Color.White, 0 }
-            };
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
@@ -182,7 +173,6 @@ namespace GTPWrapper {
                 case "clear_board":
                     this.MoveHistory.Clear();
                     this.Board.Clear();
-                    this.Captures[Color.Black] = this.Captures[Color.White] = 0;
 
                     return new Response(command);
                 case "komi":
@@ -192,6 +182,17 @@ namespace GTPWrapper {
                     } catch {}
 
                     return new Response(command, "syntax error", true);
+                case "play":
+                    try {
+                        Move move = Move.Parse(string.Join(" ", command.Arguments));
+                        this.Board = this.Board.MakeMove(move);
+                        MoveHistory.Add(move);
+                        return new Response(command);
+                    } catch(FormatException) {
+                        return new Response(command, "syntax error", true);
+                    } catch (InvalidOperationException) {
+                        return new Response(command, "illegal move", true);
+                    }
             }
 
             return new Response(command, "unknown command", true);
