@@ -39,7 +39,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets a list of past moves.
         /// </summary>
-        public List<Board> MoveHistory;
+        public List<Move> MoveHistory;
         /// <summary>
         /// Gets the number of captured stones by given color.
         /// </summary>
@@ -58,9 +58,9 @@ namespace GTPWrapper {
         /// </summary>
         public bool Enabled { get; set; }
         /// <summary>
-        /// Gets or sets the board size.
+        /// Gets or sets the board.
         /// </summary>
-        public int BoardSize { get; set; }
+        public Board Board { get; set; }
         /// <summary>
         /// Gets or sets the komi.
         /// </summary>
@@ -72,7 +72,7 @@ namespace GTPWrapper {
         public Engine(string name, string version = "") {
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
-            this.MoveHistory = new List<Board>();
+            this.MoveHistory = new List<Move>();
 
             this.Captures = new Dictionary<Color, int>() {
                 { Color.Black, 0 },
@@ -87,6 +87,7 @@ namespace GTPWrapper {
             this.Name = name;
             this.Version = version;
             this.Enabled = true;
+            this.Board = new Board(19);
         }
 
         /// <summary>
@@ -172,14 +173,14 @@ namespace GTPWrapper {
                     return new Response(command);
                 case "boardsize":
                     try {
-                        this.BoardSize = int.Parse(command.Arguments[0]);
+                        this.Board = new Board(int.Parse(command.Arguments[0]));
                         return new Response(command);
                     } catch {}
 
                     return new Response(command, "unacceptable size", true);
                 case "clear_board":
                     this.MoveHistory.Clear();
-                    this.MoveHistory.Add(new Board(this.BoardSize));
+                    this.Board.Clear();
                     this.Captures[Color.Black] = this.Captures[Color.White] = 0;
 
                     return new Response(command);
