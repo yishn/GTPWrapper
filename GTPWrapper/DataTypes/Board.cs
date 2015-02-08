@@ -155,14 +155,16 @@ namespace GTPWrapper.DataTypes {
             Vertex vertex = move.Vertex;
             Sign sign = move.Color;
 
+            if (vertex == Vertex.Pass) return this + new Board(this.Size);
             if (!this.HasVertex(vertex) || this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
-            diff.SetSign(vertex, sign);
 
+            diff.SetSign(vertex, sign);
             bool suicide = true;
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
                 if (this.GetSign(v) != -sign) continue;
-                if (this.GetLiberties(v).Count != 0) continue;
+                if (this.GetLiberties(v).Count != 1) continue;
+                if (!this.GetLiberties(v).Contains(vertex)) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
                     diff.SetSign(v, sign);
