@@ -136,6 +136,45 @@ namespace GTPWrapper.DataTypes {
             this.Arrangement.Clear();
         }
 
+        /// <summary>
+        /// Returns a new Board that represents the given Move.
+        /// </summary>
+        /// <param name="move">The corresponding move.</param>
+        /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
+        public Board MakeMove(Move move, bool allowSuicide = false) {
+            Board diff = new Board(this.Size);
+            Vertex vertex = move.Vertex;
+            Sign sign = move.Color;
+
+            if (this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
+            diff.SetSign(vertex, sign);
+
+            bool suicide = true;
+
+            foreach (Vertex v in this.GetNeighborhood(vertex)) {
+                if (this.GetSign(v) != -sign) continue;
+                if (this.GetLiberties(v).Count != 0) continue;
+
+                diff.SetSign(v, -sign);
+                suicide = false;
+            }
+
+            // Detect suicide
+            if (suicide) {
+                this.SetSign(vertex, sign);
+                List<Vertex> chain = this.GetChain(vertex);
+                suicide = this.GetLiberties(vertex).Count == 0;
+                this.SetSign(vertex, 0);
+
+                if (suicide && !allowSuicide) throw new InvalidOperationException("Suicidal move.");
+                foreach (Vertex v in chain) {
+                    diff.SetSign(v, -this.GetSign(v));
+                }
+            }
+
+            return this + diff;
+        }
+
         #region Operators
         
         public static Board operator +(Board b1, Board b2) {
