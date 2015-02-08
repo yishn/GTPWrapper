@@ -10,7 +10,7 @@ namespace GTPWrapper {
     /// <summary>
     /// Represents a GTP engine.
     /// </summary>
-    public class Engine {
+    public abstract class Engine {
         /// <summary>
         /// Fired when there is a new command in the queue.
         /// </summary>
@@ -193,6 +193,22 @@ namespace GTPWrapper {
                     } catch (InvalidOperationException) {
                         return new Response(command, "illegal move", true);
                     }
+                case "genmove":
+                    try {
+                        Color color = (Color)Enum.Parse(typeof(Color), command.Arguments[0], true);
+                        Vertex? vertex = GenerateMove(color);
+
+                        if (vertex.HasValue) {
+                            // Make move and add to move history
+                            Move move = new Move(color, vertex.Value);
+                            this.Board = this.Board.MakeMove(move);
+                            MoveHistory.Add(move);
+                        }
+
+                        return new Response(command, vertex.HasValue ? vertex.ToString() : "resign");
+                    } catch {}
+
+                    return new Response(command, "syntax error", true);
                 case "showboard":
                     string result = this.Board.ToString() + "\n\n";
                     result += "(X) captured " + this.Board.Captures[Color.Black] + "\n";
@@ -202,6 +218,12 @@ namespace GTPWrapper {
 
             return new Response(command, "unknown command", true);
         }
+
+        /// <summary>
+        /// Generates a move with the given color on the current board.
+        /// </summary>
+        /// <param name="color">The color of the move.</param>
+        protected abstract Vertex? GenerateMove(Color color);
 
         /// <summary>
         /// Ends the connection. Corresponds to 'quit'.
