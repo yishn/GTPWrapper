@@ -27,5 +27,20 @@ namespace GTPWrapper.DataTypes {
             this.Color = color;
             this.Vertex = vertex;
         }
+
+        /// <summary>
+        /// Converts input string to a Move.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        public static Move Parse(string input) {
+            try {
+                string[] args = input.ToUpper().Split(' ');
+                Color color = (Color)Enum.Parse(typeof(Color), args[0], true);
+                Vertex vertex = new Vertex(args[1]);
+                return new Move(color, vertex);
+            } catch {
+                throw new FormatException();
+            }
+        }
     }
 }
