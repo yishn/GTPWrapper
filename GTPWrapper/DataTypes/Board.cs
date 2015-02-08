@@ -155,7 +155,7 @@ namespace GTPWrapper.DataTypes {
             Vertex vertex = move.Vertex;
             Sign sign = move.Color;
 
-            if (this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
+            if (!this.HasVertex(vertex) || this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
             diff.SetSign(vertex, sign);
 
             bool suicide = true;
