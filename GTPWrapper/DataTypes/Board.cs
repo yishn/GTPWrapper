@@ -178,9 +178,11 @@ namespace GTPWrapper.DataTypes {
                 suicide = this.GetLiberties(vertex).Count == 0;
                 this.SetSign(vertex, 0);
 
-                if (suicide && !allowSuicide) throw new InvalidOperationException("Suicidal move.");
-                foreach (Vertex v in chain) {
-                    diff.SetSign(v, -this.GetSign(v));
+                if (suicide) {
+                    if (!allowSuicide) throw new InvalidOperationException("Suicidal move.");
+                    foreach (Vertex v in chain) {
+                        diff.SetSign(v, -this.GetSign(v));
+                    }
                 }
             }
             
