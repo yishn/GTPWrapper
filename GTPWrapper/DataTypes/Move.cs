@@ -8,52 +8,24 @@ namespace GTPWrapper.DataTypes {
     /// <summary>
     /// Represents a move.
     /// </summary>
-    public class Move : Board {
+    public struct Move {
         /// <summary>
         /// The color of the move.
         /// </summary>
-        public Color Color { get; private set; }
+        public Color Color;
         /// <summary>
-        /// Gets the generator vertex of the move.
+        /// The generator vertex of the move.
         /// </summary>
-        public Vertex Vertex { get; private set; }
+        public Vertex Vertex;
 
         /// <summary>
-        /// Initializes a new instance of the Move class.
+        /// Create a new instance of the Move class.
         /// </summary>
-        /// <param name="board">The base board.</param>
-        /// <param name="sign">The sign of the move.</param>
-        /// <param name="vertex">The generator vertex of the move.</param>
-        /// <exception cref="System.InvalidOperationException">Thrown if the move is illegal.</exception>
-        public Move(Board board, Sign sign, Vertex vertex, bool allowSuicide = false) : base(board.Size) {
-            this.Color = (Color)sign;
+        /// <param name="color">The color of the move.</param>
+        /// <param name="vertex">The generating vertex of the move.</param>
+        public Move(Color color, Vertex vertex) {
+            this.Color = color;
             this.Vertex = vertex;
-
-            if (board.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
-            this.SetSign(vertex, sign);
-
-            bool suicide = true;
-
-            foreach (Vertex v in board.GetNeighborhood(vertex)) {
-                if (board.GetSign(v) != -sign) continue;
-                if (board.GetLiberties(v).Count != 0) continue;
-
-                this.SetSign(v, -sign);
-                suicide = false;
-            }
-
-            // Detect suicide
-            if (suicide) {
-                board.SetSign(vertex, sign);
-                List<Vertex> chain = board.GetChain(vertex);
-                suicide = board.GetLiberties(vertex).Count == 0;
-                board.SetSign(vertex, 0);
-
-                if (suicide && !allowSuicide) throw new InvalidOperationException("Suicidal move.");
-                foreach (Vertex v in chain) {
-                    this.SetSign(v, -this.GetSign(v));
-                }
-            }
         }
     }
 }
