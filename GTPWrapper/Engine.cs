@@ -72,7 +72,8 @@ namespace GTPWrapper {
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
-                "boardsize", "clear_board", "komi", "play", "genmove", "showboard"
+                "boardsize", "clear_board", "komi", "fixed_handicap",
+                "play", "genmove", "showboard"
             });
 
             this.Name = name;
@@ -182,6 +183,17 @@ namespace GTPWrapper {
                     } catch {}
 
                     return new Response(command, "syntax error", true);
+                case "fixed_handicap":
+                    if (!this.Board.IsEmpty()) return new Response(command, "board not empty", true);
+                    try {
+                        int count = int.Parse(command.Arguments[0]);
+                        foreach (Vertex v in Board.GetHandicapPlacement(count)) {
+                            Board.SetSign(v, 1);
+                        }
+                        return new Response(command);
+                    } catch {
+                        return new Response(command, "syntax error", true);
+                    }
                 case "play":
                     try {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
