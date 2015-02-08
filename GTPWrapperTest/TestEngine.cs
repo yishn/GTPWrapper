@@ -17,7 +17,7 @@ namespace GTPWrapperTest {
                 case "error":
                     return new Response(command, "an expected error occurred", true);
                 case "showboard":
-                    return new Response(command, new Board(19).ToString());
+                    return new Response(command, this.Board.ToString());
             }
 
             return base.ExecuteCommand(command);
