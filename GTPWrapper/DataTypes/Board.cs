@@ -16,6 +16,10 @@ namespace GTPWrapper.DataTypes {
         /// Contains pairs of vertex and signs.
         /// </summary>
         protected Dictionary<Vertex, Sign> Arrangement = new Dictionary<Vertex, Sign>();
+        /// <summary>
+        /// Gets the number of captured stones by given color.
+        /// </summary>
+        public Dictionary<Color, int> Captures;
 
         /// <summary>
         /// Gets or sets the size of the board. Usually 19.
@@ -28,6 +32,10 @@ namespace GTPWrapper.DataTypes {
         /// <param name="size">The size of the board.</param>
         public Board(int size) {
             this.Size = size;
+            this.Captures = new Dictionary<Color, int>() {
+                { Color.Black, 0 },
+                { Color.White, 0 }
+            };
         }
 
         /// <summary>
@@ -134,6 +142,7 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         public void Clear() {
             this.Arrangement.Clear();
+            this.Captures[Color.Black] = this.Captures[Color.White] = 0;
         }
 
         /// <summary>
@@ -155,7 +164,10 @@ namespace GTPWrapper.DataTypes {
                 if (this.GetSign(v) != -sign) continue;
                 if (this.GetLiberties(v).Count != 0) continue;
 
-                diff.SetSign(v, -sign);
+                foreach (Vertex c in this.GetChain(v)) {
+                    diff.SetSign(v, sign);
+                }
+
                 suicide = false;
             }
 
@@ -171,8 +183,12 @@ namespace GTPWrapper.DataTypes {
                     diff.SetSign(v, -this.GetSign(v));
                 }
             }
+            
+            Board result = this + diff;
+            result.Captures[(Color)sign] += diff.Arrangement.Where(pair => pair.Value == sign && pair.Key != vertex).Count();
+            if (suicide) result.Captures[(Color)(-sign)] += diff.Arrangement.Where(pair => pair.Value == -sign || pair.Key == vertex).Count();
 
-            return this + diff;
+            return result;
         }
 
         #region Operators
