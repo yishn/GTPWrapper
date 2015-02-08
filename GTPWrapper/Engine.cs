@@ -132,7 +132,9 @@ namespace GTPWrapper {
                 Response r = this.ResponseList[c];
                 this.ResponseList.Remove(c);
                 this.CommandQueue.Dequeue();
+
                 if (ResponsePushed != null) ResponsePushed(this, new ResponseEventArgs(r));
+                if (r.Command.Name == "quit") Quit();
 
                 if (this.CommandQueue.Count == 0) break;
                 c = this.CommandQueue.Peek();
@@ -169,7 +171,6 @@ namespace GTPWrapper {
                         command.Arguments.Count > 0 && SupportedCommands.Contains(command.Arguments[0]) ? "true" : "false"
                     );
                 case "quit":
-                    Quit();
                     return new Response(command);
                 case "boardsize":
                     try {
