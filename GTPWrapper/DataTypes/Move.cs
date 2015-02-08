@@ -25,18 +25,34 @@ namespace GTPWrapper.DataTypes {
         /// <param name="sign">The sign of the move.</param>
         /// <param name="vertex">The generator vertex of the move.</param>
         /// <exception cref="System.InvalidOperationException">Thrown if the move is illegal.</exception>
-        public Move(Board board, Sign sign, Vertex vertex) : base(board.Size) {
+        public Move(Board board, Sign sign, Vertex vertex, bool allowSuicide = false) : base(board.Size) {
             this.Color = (Color)sign;
             this.Vertex = vertex;
 
             if (board.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
             this.SetSign(vertex, sign);
 
+            bool suicide = true;
+
             foreach (Vertex v in board.GetNeighborhood(vertex)) {
                 if (board.GetSign(v) != -sign) continue;
                 if (board.GetLiberties(v).Count != 0) continue;
 
                 this.SetSign(v, -sign);
+                suicide = false;
+            }
+
+            // Detect suicide
+            if (suicide) {
+                board.SetSign(vertex, sign);
+                List<Vertex> chain = board.GetChain(vertex);
+                suicide = board.GetLiberties(vertex).Count == 0;
+                board.SetSign(vertex, 0);
+
+                if (suicide && !allowSuicide) throw new InvalidOperationException("Suicidal move.");
+                foreach (Vertex v in chain) {
+                    this.SetSign(v, -this.GetSign(v));
+                }
             }
         }
     }
