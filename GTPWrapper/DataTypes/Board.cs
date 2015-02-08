@@ -189,8 +189,12 @@ namespace GTPWrapper.DataTypes {
             }
             
             Board result = this + diff;
-            result.Captures[(Color)sign] += diff.Arrangement.Where(pair => pair.Value == sign && pair.Key != vertex).Count();
-            if (suicide) result.Captures[(Color)(-sign)] += diff.Arrangement.Where(pair => pair.Value == -sign || pair.Key == vertex).Count();
+            result.Captures[(Color)sign] += diff.Arrangement
+                .Where(pair => pair.Value == sign && pair.Key != vertex)
+                .Count();
+            if (suicide) result.Captures[(Color)(-sign)] += diff.Arrangement
+                .Where(pair => pair.Value == -sign || pair.Key == vertex)
+                .Count();
 
             return result;
         }
