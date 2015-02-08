@@ -20,5 +20,9 @@ namespace GTPWrapperTest {
 
             return base.ExecuteCommand(command);
         }
+
+        protected override Vertex? GenerateMove(Color color) {
+            return Vertex.Pass;
+        }
     }
 }
