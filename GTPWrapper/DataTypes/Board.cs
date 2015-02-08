@@ -39,11 +39,18 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
+        /// Returns whether the board is empty or not.
+        /// </summary>
+        public bool IsEmpty() {
+            return Arrangement.Where(pair => pair.Value != 0).Count() == 0;
+        }
+
+        /// <summary>
         /// Determines whether the given vertex is on the board or not.
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         public bool HasVertex(Vertex vertex) {
-            return 1 <= Math.Min(vertex.X, vertex.Y) && Math.Max(vertex.X, vertex.Y) <= this.Size;
+            return vertex == Vertex.Pass || 1 <= Math.Min(vertex.X, vertex.Y) && Math.Max(vertex.X, vertex.Y) <= this.Size;
         }
 
         /// <summary>
