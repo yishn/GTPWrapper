@@ -60,8 +60,8 @@ namespace GTPWrapper {
         public override string ToString() {
             string result = "";
 
-            result += this.Id.HasValue ? this.Id.ToString() : "";
-            result += " " + this.Name + " " + string.Join(" ", this.Arguments);
+            result += this.Id.HasValue ? this.Id.ToString() + " " : "";
+            result += this.Name + " " + string.Join(" ", this.Arguments);
 
             return result;
         }
