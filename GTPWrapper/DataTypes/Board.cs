@@ -129,6 +129,13 @@ namespace GTPWrapper.DataTypes {
             Liberties.Clear();
         }
 
+        /// <summary>
+        /// Clears the board.
+        /// </summary>
+        public void Clear() {
+            this.Arrangement.Clear();
+        }
+
         #region Operators
         
         public static Board operator +(Board b1, Board b2) {
