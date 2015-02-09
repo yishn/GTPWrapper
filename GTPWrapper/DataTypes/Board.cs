@@ -145,6 +145,27 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
+        /// Get a list of all vertices on the board.
+        /// </summary>
+        public IEnumerable<Vertex> GetVertices() {
+            for (int i = 1; i <= this.Size; i++) {
+                for (int j = 1; j <= this.Size; j++) {
+                    yield return new Vertex(i, j);
+                }
+            }
+        }
+        /// <summary>
+        /// Get a list of vertices with the given sign.
+        /// </summary>
+        /// <param name="sign">The sign.</param>
+        public IEnumerable<Vertex> GetVertices(Sign sign) {
+            if (sign != 0)
+                return Arrangement.Where(pair => pair.Value == sign).Select(pair => pair.Key);
+
+            return this.GetVertices().Where(v => this.GetSign(v) == 0);
+        }
+
+        /// <summary>
         /// Clears the board.
         /// </summary>
         public void Clear() {
