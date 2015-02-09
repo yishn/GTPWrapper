@@ -10,7 +10,7 @@ namespace GTPWrapper.DataTypes {
     /// </summary>
     public class Board {
         private Dictionary<Vertex, Vertex> ChainAnchor = new Dictionary<Vertex, Vertex>();
-        private Dictionary<Vertex, List<Vertex>> Liberties = new Dictionary<Vertex, List<Vertex>>();
+        private Dictionary<Vertex, IEnumerable<Vertex>> Liberties = new Dictionary<Vertex, IEnumerable<Vertex>>();
 
         /// <summary>
         /// Contains pairs of vertex and signs.
@@ -73,13 +73,13 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="vertex">The vertex.</param>
         /// <param name="result">A list of all chained vertices.</param>
-        public List<Vertex> GetChain(Vertex vertex, List<Vertex> result = null) {
+        public IEnumerable<Vertex> GetChain(Vertex vertex, List<Vertex> result = null) {
             if (!HasVertex(vertex)) return new List<Vertex>();
 
             if (result == null) {
                 // If calculated already, load from ChainAnchor
                 if (ChainAnchor.ContainsKey(vertex)) {                
-                    return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]).ToList();
+                    return ChainAnchor.Keys.Where(v => ChainAnchor[v] == ChainAnchor[vertex]);
                 }
 
                 result = new List<Vertex>();
@@ -104,7 +104,7 @@ namespace GTPWrapper.DataTypes {
         /// Gets the list of liberties of the chain represented by the given vertex.
         /// </summary>
         /// <param name="vertex">A vertex which represents the chain.</param>
-        public List<Vertex> GetLiberties(Vertex vertex) {
+        public IEnumerable<Vertex> GetLiberties(Vertex vertex) {
             if (GetSign(vertex) == 0) return new List<Vertex>();
 
             // If calculated already, load from Liberties
@@ -112,14 +112,14 @@ namespace GTPWrapper.DataTypes {
                 return Liberties[ChainAnchor[vertex]];
             }
 
-            List<Vertex> chain = GetChain(vertex);
+            IEnumerable<Vertex> chain = GetChain(vertex);
             IEnumerable<Vertex> liberties = new List<Vertex>();
 
             foreach (Vertex c in chain) {
                 liberties = liberties.Union(GetNeighborhood(c).Where(x => GetSign(x) == 0));
             }
 
-            Liberties[ChainAnchor[vertex]] = liberties.ToList();
+            Liberties[ChainAnchor[vertex]] = liberties;
             return Liberties[ChainAnchor[vertex]];
         }
 
@@ -170,7 +170,7 @@ namespace GTPWrapper.DataTypes {
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
                 if (this.GetSign(v) != -sign) continue;
-                if (this.GetLiberties(v).Count != 1) continue;
+                if (this.GetLiberties(v).Count() != 1) continue;
                 if (!this.GetLiberties(v).Contains(vertex)) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
@@ -183,8 +183,8 @@ namespace GTPWrapper.DataTypes {
             // Detect suicide
             if (suicide) {
                 this.SetSign(vertex, sign);
-                List<Vertex> chain = this.GetChain(vertex);
-                suicide = this.GetLiberties(vertex).Count == 0;
+                IEnumerable<Vertex> chain = this.GetChain(vertex);
+                suicide = this.GetLiberties(vertex).Count() == 0;
                 this.SetSign(vertex, 0);
 
                 if (suicide) {
