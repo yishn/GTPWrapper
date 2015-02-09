@@ -242,7 +242,7 @@ namespace GTPWrapper {
 
                     return new Response(command, "syntax error", true);
                 case "showboard":
-                    string result = this.Board.ToString() + "\n\n";
+                    string result = this.Board.ToString() + "\n-\n";
                     result += "(X) captured " + this.Board.Captures[Color.Black] + "\n";
                     result += "(O) captured " + this.Board.Captures[Color.White];
                     return new Response(command, result);

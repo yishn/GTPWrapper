@@ -145,7 +145,7 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
-        /// Get a list of all vertices on the board.
+        /// Get a list of all vertices on the board except the pass vertex.
         /// </summary>
         public IEnumerable<Vertex> GetVertices() {
             for (int i = 1; i <= this.Size; i++) {
@@ -178,7 +178,7 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="move">The corresponding move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
-        public Board MakeMove(Move move, bool allowSuicide = false) {
+        public Board MakeMove(Move move, bool allowSuicide = true) {
             Board diff = new Board(this.Size);
             Vertex vertex = move.Vertex;
             Sign sign = move.Color;

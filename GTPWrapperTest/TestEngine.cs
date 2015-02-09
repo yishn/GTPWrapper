@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace GTPWrapperTest {
     public class TestEngine : Engine {
+        Random random = new Random();
+
         public TestEngine() : base("GTP Test Engine", "1.0") {
             this.SupportedCommands.AddRange(new string[] { "error" });
         }
@@ -22,7 +24,9 @@ namespace GTPWrapperTest {
         }
 
         protected override Vertex? GenerateMove(Color color) {
-            return Vertex.Pass;
+            List<Vertex> list = Board.GetVertices(0).ToList();
+            Vertex v = list[random.Next(1, list.Count)];
+            return v;
         }
     }
 }
