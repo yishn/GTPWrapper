@@ -191,7 +191,8 @@ namespace GTPWrapper.DataTypes {
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
                 if (this[v] != -sign) continue;
-                if (this.GetLiberties(v).Count() != 0) continue;
+                if (this.GetLiberties(v).Count() != 1) continue;
+                if (!this.GetLiberties(v).Contains(vertex)) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
                     diff[c] = sign;
