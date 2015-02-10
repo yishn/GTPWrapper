@@ -228,6 +228,11 @@ namespace GTPWrapper.DataTypes {
         }
 
         #region Operators
+
+        public Sign this[Vertex v] {
+            get { return this.GetSign(v); }
+            set { this.SetSign(v, value); }
+        }
         
         public static Board operator +(Board b1, Board b2) {
             Board board = new Board(Math.Max(b1.Size, b2.Size));
