@@ -187,12 +187,12 @@ namespace GTPWrapper.DataTypes {
             if (!this.HasVertex(vertex) || this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
 
             diff.SetSign(vertex, sign);
+            this.SetSign(vertex, sign);
             bool suicide = true;
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
                 if (this.GetSign(v) != -sign) continue;
-                if (this.GetLiberties(v).Count() != 1) continue;
-                if (!this.GetLiberties(v).Contains(vertex)) continue;
+                if (this.GetLiberties(v).Count() != 0) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
                     diff.SetSign(v, sign);
@@ -200,6 +200,8 @@ namespace GTPWrapper.DataTypes {
 
                 suicide = false;
             }
+
+            this.SetSign(vertex, 0);
 
             // Detect suicide
             if (suicide) {
