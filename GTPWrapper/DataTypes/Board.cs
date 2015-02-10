@@ -186,7 +186,7 @@ namespace GTPWrapper.DataTypes {
             if (vertex == Vertex.Pass) return this + new Board(this.Size);
             if (!this.HasVertex(vertex) || this[vertex] != 0) throw new InvalidOperationException("Illegal move.");
 
-            diff[vertex] = this[vertex] = sign;
+            diff[vertex] = sign;
             bool suicide = true;
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
@@ -194,13 +194,11 @@ namespace GTPWrapper.DataTypes {
                 if (this.GetLiberties(v).Count() != 0) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
-                    diff[v] = sign;
+                    diff[c] = sign;
                 }
 
                 suicide = false;
             }
-
-            this[vertex] = 0;
 
             // Detect suicide
             if (suicide) {
