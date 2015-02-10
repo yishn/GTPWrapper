@@ -89,7 +89,7 @@ namespace GTPWrapper.DataTypes {
 
             // Recursive depth-first search
             foreach (Vertex v in GetNeighborhood(vertex)) {
-                if (GetSign(v) != GetSign(vertex)) continue;
+                if (this[v] != this[vertex]) continue;
                 if (ChainAnchor.ContainsKey(v)) continue;
 
                 ChainAnchor[v] = ChainAnchor[vertex];
@@ -116,7 +116,7 @@ namespace GTPWrapper.DataTypes {
             IEnumerable<Vertex> liberties = new List<Vertex>();
 
             foreach (Vertex c in chain) {
-                liberties = liberties.Union(GetNeighborhood(c).Where(x => GetSign(x) == 0));
+                liberties = liberties.Union(GetNeighborhood(c).Where(x => this[x] == 0));
             }
 
             Liberties[ChainAnchor[vertex]] = liberties;
@@ -162,7 +162,7 @@ namespace GTPWrapper.DataTypes {
             if (sign != 0)
                 return Arrangement.Where(pair => pair.Value == sign).Select(pair => pair.Key);
 
-            return this.GetVertices().Where(v => this.GetSign(v) == 0);
+            return this.GetVertices().Where(v => this[v] == 0);
         }
 
         /// <summary>
@@ -184,36 +184,35 @@ namespace GTPWrapper.DataTypes {
             Sign sign = move.Color;
 
             if (vertex == Vertex.Pass) return this + new Board(this.Size);
-            if (!this.HasVertex(vertex) || this.GetSign(vertex) != 0) throw new InvalidOperationException("Illegal move.");
+            if (!this.HasVertex(vertex) || this[vertex] != 0) throw new InvalidOperationException("Illegal move.");
 
-            diff.SetSign(vertex, sign);
-            this.SetSign(vertex, sign);
+            diff[vertex] = this[vertex] = sign;
             bool suicide = true;
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
-                if (this.GetSign(v) != -sign) continue;
+                if (this[v] != -sign) continue;
                 if (this.GetLiberties(v).Count() != 0) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
-                    diff.SetSign(v, sign);
+                    diff[v] = sign;
                 }
 
                 suicide = false;
             }
 
-            this.SetSign(vertex, 0);
+            this[vertex] = 0;
 
             // Detect suicide
             if (suicide) {
-                this.SetSign(vertex, sign);
+                this[vertex] = sign;
                 IEnumerable<Vertex> chain = this.GetChain(vertex);
                 suicide = this.GetLiberties(vertex).Count() == 0;
-                this.SetSign(vertex, 0);
+                this[vertex] = 0;
 
                 if (suicide) {
                     if (!allowSuicide) throw new InvalidOperationException("Suicidal move.");
                     foreach (Vertex v in chain) {
-                        diff.SetSign(v, -this.GetSign(v));
+                        diff[v] = -this[v];
                     }
                 }
             }
@@ -292,7 +291,7 @@ namespace GTPWrapper.DataTypes {
                         continue;
                     }
 
-                    char c = GetSign(new Vertex(x, y)) == 1 ? 'X' : GetSign(new Vertex(x, y)) == -1 ? 'O' : '.';
+                    char c = this[new Vertex(x, y)] == 1 ? 'X' : this[new Vertex(x, y)] == -1 ? 'O' : '.';
                     if (c == '.' && hoshi.Contains(new Vertex(x, y))) c = '+';
                     result += " " + c;
                 }
