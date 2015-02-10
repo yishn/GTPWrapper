@@ -19,7 +19,7 @@ namespace GTPWrapper.DataTypes {
         /// <summary>
         /// Gets the number of captured stones by given color.
         /// </summary>
-        public Dictionary<Color, int> Captures;
+        public Dictionary<Sign, int> Captures;
 
         /// <summary>
         /// Gets or sets the size of the board. Usually 19.
@@ -32,7 +32,7 @@ namespace GTPWrapper.DataTypes {
         /// <param name="size">The size of the board.</param>
         public Board(int size) {
             this.Size = size;
-            this.Captures = new Dictionary<Color, int>() {
+            this.Captures = new Dictionary<Sign, int>() {
                 { Color.Black, 0 },
                 { Color.White, 0 }
             };
@@ -217,10 +217,16 @@ namespace GTPWrapper.DataTypes {
             }
             
             Board result = this + diff;
-            result.Captures[(Color)sign] += diff.Arrangement
+
+            for (int i = -1; i <= 1; i++) {
+                if (!this.Captures.ContainsKey(i)) continue;
+                result.Captures[i] = this.Captures[i];
+            }
+
+            result.Captures[sign] += diff.Arrangement
                 .Where(pair => pair.Value == sign && pair.Key != vertex)
                 .Count();
-            if (suicide) result.Captures[(Color)(-sign)] += diff.Arrangement
+            if (suicide) result.Captures[-sign] += diff.Arrangement
                 .Where(pair => pair.Value == -sign || pair.Key == vertex)
                 .Count();
 
