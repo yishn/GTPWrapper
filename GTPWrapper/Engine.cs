@@ -166,7 +166,9 @@ namespace GTPWrapper {
                     return new Response(command);
                 case "boardsize":
                     try {
-                        this.Board = new Board(int.Parse(command.Arguments[0]));
+                        int size = int.Parse(command.Arguments[0]);
+                        if (size > 25) throw new Exception();
+                        this.Board = new Board(size);
                         return new Response(command);
                     } catch {}
 
