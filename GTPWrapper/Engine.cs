@@ -39,7 +39,7 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets a list of past moves.
         /// </summary>
-        public List<Tuple<Move, Board>> MoveHistory;
+        public Stack<Tuple<Move, Board>> MoveHistory;
 
         /// <summary>
         /// Gets or sets the name of the engine.
@@ -68,7 +68,7 @@ namespace GTPWrapper {
         public Engine(string name, string version = "") {
             this.CommandQueue = new Queue<Command>();
             this.ResponseList = new Dictionary<Command, Response>();
-            this.MoveHistory = new List<Tuple<Move, Board>>();
+            this.MoveHistory = new Stack<Tuple<Move, Board>>();
 
             this.SupportedCommands = new List<string>(new string[] {
                 "protocol_version", "name", "version", "known_command", "list_commands", "quit",
@@ -219,11 +219,9 @@ namespace GTPWrapper {
                 case "play":
                     try {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
-                        Board newboard = this.Board.MakeMove(move);
-                        
-                        this.Board = newboard;
-                        MoveHistory.Add(Tuple.Create(move, newboard));
+                        MoveHistory.Push(Tuple.Create(move, this.Board + new Board(0)));
 
+                        this.Board = this.Board.MakeMove(move);
                         return new Response(command);
                     } catch(FormatException) {
                         return new Response(command, "syntax error", true);
@@ -238,10 +236,9 @@ namespace GTPWrapper {
                         if (vertex.HasValue) {
                             // Make move and add to move history
                             Move move = new Move(color, vertex.Value);
-                            Board newboard = this.Board.MakeMove(move);
-                            
-                            this.Board = newboard;
-                            MoveHistory.Add(Tuple.Create(move, newboard));
+                            MoveHistory.Push(Tuple.Create(move, this.Board + new Board(0)));
+
+                            this.Board = this.Board.MakeMove(move);
                         }
 
                         return new Response(command, vertex.HasValue ? vertex.ToString() : "resign");
