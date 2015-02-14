@@ -219,7 +219,7 @@ namespace GTPWrapper {
                 case "play":
                     try {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
-                        MoveHistory.Push(Tuple.Create(move, this.Board + new Board(0)));
+                        MoveHistory.Push(Tuple.Create(move, this.Board));
 
                         this.Board = this.Board.MakeMove(move);
                         return new Response(command);
@@ -236,7 +236,7 @@ namespace GTPWrapper {
                         if (vertex.HasValue) {
                             // Make move and add to move history
                             Move move = new Move(color, vertex.Value);
-                            MoveHistory.Push(Tuple.Create(move, this.Board + new Board(0)));
+                            MoveHistory.Push(Tuple.Create(move, this.Board));
 
                             this.Board = this.Board.MakeMove(move);
                         }
@@ -245,6 +245,13 @@ namespace GTPWrapper {
                     } catch {}
 
                     return new Response(command, "syntax error", true);
+                case "undo":
+                    if (MoveHistory.Count == 0) return new Response(command, "cannot undo", true);
+
+                    Tuple<Move, Board> tuple = MoveHistory.Pop();
+                    this.Board = tuple.Item2;
+
+                    return new Response(command);
                 case "showboard":
                     string result = this.Board.ToString() + "\n-\n";
                     result += "(X) captured " + this.Board.Captures[Color.Black] + "\n";
