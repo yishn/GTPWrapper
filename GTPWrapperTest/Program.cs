@@ -29,7 +29,8 @@ namespace GTPWrapperTest {
         }
 
         static void engine_ResponsePushed(object sender, ResponseEventArgs e) {
-            Console.WriteLine(e.Response.ToString() + "\n");
+            Console.WriteLine(e.Response.ToString());
+            Console.WriteLine();
         }
     }
 }

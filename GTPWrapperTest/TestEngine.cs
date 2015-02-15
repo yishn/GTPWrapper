@@ -24,7 +24,9 @@ namespace GTPWrapperTest {
         }
 
         protected override Vertex? GenerateMove(Color color) {
-            List<Vertex> list = Board.GetVertices(0).ToList();
+            List<Vertex> list = Board.GetVertices(Color.Empty).ToList();
+            if (list.Count == 0) return null;
+
             Vertex v = list[random.Next(1, list.Count)];
             return v;
         }
