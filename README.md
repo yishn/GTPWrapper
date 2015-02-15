@@ -35,9 +35,6 @@ class TestEngine : Engine {
 `Engine` can only receive commands and give responses at an abstract level, i.e. you have to execute commands and implement the actual communication with the controller yourself, e.g. like this:
 
 ```c#
-using GTPWrapper
-using GTPWrapper.DataTypes
-
 class Program {
     static void Main(string[] args) {
         TestEngine engine = new TestEngine();
@@ -64,5 +61,27 @@ class Program {
         Console.WriteLine(e.Response);
         Console.WriteLine();
     }
+}
+```
+
+Add or overwrite commands
+-------------------------
+
+First, you'll want to add your command to the `SupportedCommands` list of your engine. Then override the `ExecuteCommand` method and you're done:
+
+```c#
+class TestEngine : Engine {
+    public TestEngine() : base("Test Engine", "1.0") {
+        this.SupportedCommands.Add("customcommand");
+    }
+    
+    protected override Response ExecuteCommand(Command command) {
+        if (command.Name == "customcommand")
+            return new Response(command, "This is my custom command!");
+        
+        return base.ExecuteCommand(command);
+    }
+    
+    protected override Vertex? GenerateMove(Color color) { return null; }
 }
 ```
