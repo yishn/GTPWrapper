@@ -5,11 +5,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace GTPWrapper.SGF {
+namespace GTPWrapper.Sgf {
     /// <summary>
     /// Provides methods to parse a SGF string.
     /// </summary>
-    public static class SGFParser {
+    public static class SgfParser {
         /// <summary>
         /// Token types of a SGF string.
         /// </summary>
@@ -66,7 +66,7 @@ namespace GTPWrapper.SGF {
                                 yield return Tuple.Create(TokenType.PropIdent, m.Value);
                                 i += m.Length;
                             } else {
-                                throw new SGFParseException("Unexpected token '" + input[i] + "'");
+                                throw new SgfParseException("Unexpected token '" + input[i] + "'");
                             }
                             break;
                     }
@@ -76,17 +76,14 @@ namespace GTPWrapper.SGF {
                             if (!inBackslash) {
                                 inBackslash = true;
                                 i++;
-                                break;
                             } else {
                                 goto default;
                             }
+                            break;
                         case '\n':
-                            if (!inBackslash) {
-                                goto default;
-                            } else {
-                                i++;
-                                break;
-                            }
+                            if (!inBackslash) goto default;
+                            else i++;
+                            break;
                         case ']':
                             if (!inBackslash) {
                                 inCValueType = false;

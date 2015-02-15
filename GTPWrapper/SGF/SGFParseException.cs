@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GTPWrapper.SGF {
+namespace GTPWrapper.Sgf {
     /// <summary>
     /// The exception that is thrown when there is an error in the parsing process of a SGF string.
     /// </summary>
-    public class SGFParseException : Exception {
-        public SGFParseException(string message = "") : base(message) { }
+    public class SgfParseException : Exception {
+        public SgfParseException(string message = "") : base(message) { }
     }
 }
