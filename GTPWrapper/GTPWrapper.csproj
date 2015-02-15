@@ -49,8 +49,11 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="Sgf\SgfGameTree.cs" />
+    <Compile Include="Sgf\SgfNode.cs" />
     <Compile Include="Sgf\SgfParseException.cs" />
     <Compile Include="Sgf\SgfParser.cs" />
+    <Compile Include="Sgf\SgfProperty.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
