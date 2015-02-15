@@ -15,7 +15,7 @@ GTPWrapper
                                 A B C D E F G H J
 ```
 
-The Go Text Protocol or GTP is used by Go playing engines to communicate between computers or humans. GTPWrapper is a C# wrapper for the GTP protocol. This library implements [GTP Version 2 Specification Draft](http://www.lysator.liu.se/~gunnar/gtp/).
+The Go Text Protocol or GTP is used by Go playing engines to communicate between computers or humans. GTPWrapper is a C# library for creating GTP engines. This library implements [GTP Version 2 Specification Draft](http://www.lysator.liu.se/~gunnar/gtp/).
 
 License
 -------
@@ -25,7 +25,7 @@ This work is licensed under the terms of the MIT license. See LICENSE.txt.
 Getting started
 ---------------
 
-First, you need to create an GTP engine by implementing the abstract `Engine` class:
+To create a GTP engine is straightforward: Simply create a new class implementing the abstract `Engine` class:
 
 ```c#
 using GTPWrapper
