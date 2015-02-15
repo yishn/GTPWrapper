@@ -239,6 +239,11 @@ namespace GTPWrapper.DataTypes {
             get { return this.GetSign(v); }
             set { this.SetSign(v, value); }
         }
+
+        public Sign this[string vertex] {
+            get { return this[new Vertex(vertex)]; }
+            set { this[new Vertex(vertex)] = value; }
+        }
         
         public static Board operator +(Board b1, Board b2) {
             Board board = new Board(Math.Max(b1.Size, b2.Size));
