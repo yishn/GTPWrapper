@@ -25,16 +25,12 @@ namespace GTPWrapper.Sgf {
         /// </summary>
         public SgfNode() : this(new List<SgfProperty>()) { }
 
-        public string this[string ident] {
-            get {
-                SgfProperty property = Properties.FirstOrDefault(x => x.Ident == ident);
-                if (property != null) return property.Value;
-                throw new InvalidOperationException();
-            }
+        public SgfProperty this[string ident] {
+            get { return Properties.FirstOrDefault(x => x.Ident == ident); }
             set {
                 SgfProperty property = Properties.FirstOrDefault(x => x.Ident == ident);
-                if (property != null) property.Value = value;
-                else Properties.Add(new SgfProperty(ident, value));
+                if (property != null) Properties.Remove(property);
+                Properties.Add(value);
             }
         }
     }

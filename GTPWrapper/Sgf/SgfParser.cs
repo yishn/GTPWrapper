@@ -102,5 +102,51 @@ namespace GTPWrapper.Sgf {
                 }
             }
         }
+
+        public static SgfGameTree ParseGameTree(IEnumerable<Tuple<TokenType, string>> tokens) {
+            var nodeTokens = tokens.TakeWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
+            var remaining = tokens.Skip(nodeTokens.Count());
+
+            SgfGameTree tree = new SgfGameTree();
+            SgfNode node = new SgfNode();
+            SgfProperty property = new SgfProperty("", "");
+
+            foreach (Tuple<TokenType, string> token in nodeTokens) {
+                if (token.Item1 == TokenType.Semicolon) {
+                    node = new SgfNode();
+                    tree.Nodes.Add(node);
+                } else if (token.Item1 == TokenType.PropIdent) {
+                    property = new SgfProperty(token.Item2, new List<string>());
+                    node.Properties.Add(property);
+                } else if (token.Item1 == TokenType.CValueType) {
+                    property.Values.Add(token.Item2);
+                } else if (token.Item1 == TokenType.Parenthesis) {
+                    throw new SgfParseException("Unexpected parenthesis.");
+                }
+            }
+
+            List<Tuple<TokenType, string>> subtokens = new List<Tuple<TokenType, string>>();
+            int depth = 0;
+
+            foreach (Tuple<TokenType, string> token in remaining) {
+                if (token.Item1 == TokenType.Parenthesis && token.Item2 == "(") {
+                    depth++;
+
+                    if (depth == 1) continue;
+                } else if (token.Item1 == TokenType.Parenthesis && token.Item2 == ")") {
+                    depth--;
+
+                    if (depth == 0) {
+                        tree.GameTrees.Add(ParseGameTree(subtokens));
+                        subtokens.Clear();
+                        continue;
+                    }
+                }
+
+                subtokens.Add(token);
+            }
+
+            return tree;
+        }
     }
 }
