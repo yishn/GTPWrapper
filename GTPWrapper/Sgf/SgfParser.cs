@@ -103,9 +103,13 @@ namespace GTPWrapper.Sgf {
             }
         }
 
+        /// <summary>
+        /// Returns the corresponding game tree of a token list.
+        /// </summary>
+        /// <param name="tokens">The token list.</param>
         public static SgfGameTree Parse(IEnumerable<Tuple<TokenType, string>> tokens) {
             var nodeTokens = tokens.TakeWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
-            var remaining = tokens.Skip(nodeTokens.Count());
+            var remaining = tokens.SkipWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
 
             SgfGameTree tree = new SgfGameTree();
             SgfNode node = new SgfNode();
