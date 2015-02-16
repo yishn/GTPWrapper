@@ -103,7 +103,7 @@ namespace GTPWrapper.Sgf {
             }
         }
 
-        public static SgfGameTree ParseGameTree(IEnumerable<Tuple<TokenType, string>> tokens) {
+        public static SgfGameTree Parse(IEnumerable<Tuple<TokenType, string>> tokens) {
             var nodeTokens = tokens.TakeWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
             var remaining = tokens.Skip(nodeTokens.Count());
 
@@ -137,7 +137,7 @@ namespace GTPWrapper.Sgf {
                     depth--;
 
                     if (depth == 0) {
-                        tree.GameTrees.Add(ParseGameTree(subtokens));
+                        tree.GameTrees.Add(Parse(subtokens));
                         subtokens.Clear();
                         continue;
                     }
