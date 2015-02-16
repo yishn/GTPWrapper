@@ -7,28 +7,28 @@ namespace GTPWrapper.Sgf {
     /// <summary>
     /// Represents a SGF node.
     /// </summary>
-    public class SgfNode {
+    public class Node {
         /// <summary>
         /// The property list of the node.
         /// </summary>
         public List<SgfProperty> Properties { get; set; }
 
         /// <summary>
-        /// Initializes a new SgfNode class.
+        /// Initializes a new Node class.
         /// </summary>
         /// <param name="properties">The property list of the node.</param>
-        public SgfNode(List<SgfProperty> properties) {
+        public Node(List<SgfProperty> properties) {
             this.Properties = properties;
         }
         /// <summary>
-        /// Initializes a new SgfNode class.
+        /// Initializes a new Node class.
         /// </summary>
-        public SgfNode() : this(new List<SgfProperty>()) { }
+        public Node() : this(new List<SgfProperty>()) { }
 
         public SgfProperty this[string ident] {
-            get { return Properties.FirstOrDefault(x => x.Ident == ident); }
+            get { return Properties.FirstOrDefault(x => x.Identifier == ident); }
             set {
-                SgfProperty property = Properties.FirstOrDefault(x => x.Ident == ident);
+                SgfProperty property = Properties.FirstOrDefault(x => x.Identifier == ident);
                 if (property != null) Properties.Remove(property);
                 Properties.Add(value);
             }

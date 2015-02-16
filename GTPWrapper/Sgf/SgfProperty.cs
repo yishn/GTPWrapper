@@ -9,9 +9,9 @@ namespace GTPWrapper.Sgf {
     /// </summary>
     public class SgfProperty {
         /// <summary>
-        /// The ident of the property.
+        /// The identifier of the property.
         /// </summary>
-        public string Ident { get; set; }
+        public string Identifier { get; set; }
         /// <summary>
         /// The value list of the property.
         /// </summary>
@@ -24,18 +24,18 @@ namespace GTPWrapper.Sgf {
         /// <summary>
         /// Initializes a new instance of the SgfProperty class.
         /// </summary>
-        /// <param name="ident">The ident.</param>
+        /// <param name="identifier">The identifier.</param>
         /// <param name="values">A list of values.</param>
-        public SgfProperty(string ident, List<string> values) {
-            this.Ident = ident;
+        public SgfProperty(string identifier, List<string> values) {
+            this.Identifier = identifier;
             this.Values = values;
         }
         /// <summary>
         /// Initializes a new instance of the SgfProperty class.
         /// </summary>
-        /// <param name="ident">The ident.</param>
+        /// <param name="identifier">The identifier.</param>
         /// <param name="value">The value.</param>
-        public SgfProperty(string ident, string value) : this(ident, new string[] { value }.ToList()) { }
+        public SgfProperty(string identifier, string value) : this(identifier, new string[] { value }.ToList()) { }
 
         /// <summary>
         /// Escapes a minimal set of characters (\, ]) by replacing them with their escape codes.
@@ -49,7 +49,7 @@ namespace GTPWrapper.Sgf {
         /// Returns a string which represents the object.
         /// </summary>
         public override string ToString() {
-            return this.Ident + "[" + string.Join("][", this.Values.Select(x => SgfProperty.Escape(x))) + "]";
+            return this.Identifier + "[" + string.Join("][", this.Values.Select(x => SgfProperty.Escape(x))) + "]";
         }
     }
 }

@@ -10,22 +10,22 @@ namespace GTPWrapper.Sgf {
     /// <summary>
     /// Represents a SGF game tree.
     /// </summary>
-    public class SgfGameTree {
+    public class GameTree {
         /// <summary>
         /// The node list of the game tree.
         /// </summary>
-        public List<SgfNode> Nodes { get; set; }
+        public List<Node> Nodes { get; set; }
         /// <summary>
         /// The list of all subtrees.
         /// </summary>
-        public List<SgfGameTree> GameTrees { get; set; }
+        public List<GameTree> GameTrees { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the SgfGameTree class.
+        /// Initializes a new instance of the GameTree class.
         /// </summary>
-        public SgfGameTree() {
-            this.Nodes = new List<SgfNode>();
-            this.GameTrees = new List<SgfGameTree>();
+        public GameTree() {
+            this.Nodes = new List<Node>();
+            this.GameTrees = new List<GameTree>();
         }
 
         /// <summary>

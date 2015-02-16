@@ -66,7 +66,7 @@ namespace GTPWrapper.Sgf {
                                 yield return Tuple.Create(TokenType.PropIdent, m.Value);
                                 i += m.Length;
                             } else {
-                                throw new SgfParseException("Unexpected token '" + input[i] + "'");
+                                throw new ParseException("Unexpected token '" + input[i] + "'");
                             }
                             break;
                     }
@@ -107,17 +107,17 @@ namespace GTPWrapper.Sgf {
         /// Returns the corresponding game tree of a token list.
         /// </summary>
         /// <param name="tokens">The token list.</param>
-        public static SgfGameTree Parse(IEnumerable<Tuple<TokenType, string>> tokens) {
+        public static GameTree Parse(IEnumerable<Tuple<TokenType, string>> tokens) {
             var nodeTokens = tokens.TakeWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
             var remaining = tokens.SkipWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
 
-            SgfGameTree tree = new SgfGameTree();
-            SgfNode node = new SgfNode();
+            GameTree tree = new GameTree();
+            Node node = new Node();
             SgfProperty property = new SgfProperty("", "");
 
             foreach (Tuple<TokenType, string> token in nodeTokens) {
                 if (token.Item1 == TokenType.Semicolon) {
-                    node = new SgfNode();
+                    node = new Node();
                     tree.Nodes.Add(node);
                 } else if (token.Item1 == TokenType.PropIdent) {
                     property = new SgfProperty(token.Item2, new List<string>());
@@ -125,7 +125,7 @@ namespace GTPWrapper.Sgf {
                 } else if (token.Item1 == TokenType.CValueType) {
                     property.Values.Add(token.Item2);
                 } else if (token.Item1 == TokenType.Parenthesis) {
-                    throw new SgfParseException("Unexpected parenthesis.");
+                    throw new ParseException("Unexpected parenthesis.");
                 }
             }
 
