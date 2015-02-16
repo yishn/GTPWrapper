@@ -33,5 +33,12 @@ namespace GTPWrapper.Sgf {
                 Properties.Add(value);
             }
         }
+
+        /// <summary>
+        /// Returns a string which represents the object.
+        /// </summary>
+        public override string ToString() {
+            return ";" + string.Join("", this.Properties);
+        }
     }
 }

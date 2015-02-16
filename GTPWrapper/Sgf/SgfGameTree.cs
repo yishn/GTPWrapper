@@ -27,5 +27,13 @@ namespace GTPWrapper.Sgf {
             this.Nodes = new List<SgfNode>();
             this.GameTrees = new List<SgfGameTree>();
         }
+
+        /// <summary>
+        /// Returns a string which represents the object.
+        /// </summary>
+        public override string ToString() {
+            return string.Join("\n", this.Nodes) +
+                (this.GameTrees.Count == 0 ? "" : "\n(" + string.Join(")\n(", this.GameTrees) + ")");
+        }
     }
 }

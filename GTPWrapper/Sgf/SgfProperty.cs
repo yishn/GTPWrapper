@@ -36,5 +36,20 @@ namespace GTPWrapper.Sgf {
         /// <param name="ident">The ident.</param>
         /// <param name="value">The value.</param>
         public SgfProperty(string ident, string value) : this(ident, new string[] { value }.ToList()) { }
+
+        /// <summary>
+        /// Escapes a minimal set of characters (\, ]) by replacing them with their escape codes.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        public static string Escape(string input) {
+            return input.Replace(@"\", @"\\").Replace(@"]", @"\]");
+        }
+
+        /// <summary>
+        /// Returns a string which represents the object.
+        /// </summary>
+        public override string ToString() {
+            return this.Ident + "[" + string.Join("][", this.Values.Select(x => SgfProperty.Escape(x))) + "]";
+        }
     }
 }
