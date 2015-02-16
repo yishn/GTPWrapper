@@ -32,8 +32,8 @@ namespace GTPWrapper.Sgf {
         /// Returns a string which represents the object.
         /// </summary>
         public override string ToString() {
-            return string.Join("\n", this.Nodes) +
-                (this.GameTrees.Count == 0 ? "" : "\n(" + string.Join(")\n(", this.GameTrees) + ")");
+            return string.Join("\n", this.Nodes) + (this.Nodes.Count == 0 || this.GameTrees.Count == 0 ? "" : "\n") +
+                (this.GameTrees.Count == 0 ? "" : "(" + string.Join(")\n(", this.GameTrees) + ")");
         }
     }
 }
