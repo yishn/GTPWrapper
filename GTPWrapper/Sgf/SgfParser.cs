@@ -26,8 +26,9 @@ namespace GTPWrapper.Sgf {
         /// <param name="input">The SGF string.</param>
         public static IEnumerable<Tuple<TokenType, string>> Tokenize(string input) {
             StringBuilder builder = new StringBuilder();
-            int i = 0;
+            Regex propIdentRegex = new Regex(@"[A-Z]+");
 
+            int i = 0;
             bool inCValueType = false;
             bool inBackslash = false;
 
@@ -59,7 +60,6 @@ namespace GTPWrapper.Sgf {
                                 break;
                             }
 
-                            Regex propIdentRegex = new Regex(@"[A-Z]+");
                             Match m = propIdentRegex.Match(input, i);
 
                             if (m.Success && m.Index == i) {
