@@ -1,6 +1,8 @@
 GTPWrapper
 ==========
 
+[![Build status](https://ci.appveyor.com/api/projects/status/gasm5yiawhpcmp5x?svg=true)](https://ci.appveyor.com/project/yishn/gtpwrapper)
+
 ```
                                 A B C D E F G H J
                               9 X X X X X X O . . 9
