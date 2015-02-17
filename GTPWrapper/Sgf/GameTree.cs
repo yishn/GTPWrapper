@@ -29,5 +29,23 @@ namespace GTPWrapper.Sgf {
             return string.Join("\n", this.Elements) + (this.Elements.Count == 0 || this.SubTrees.Count == 0 ? "" : "\n") +
                 (this.SubTrees.Count == 0 ? "" : "(" + string.Join(")\n(", this.SubTrees) + ")");
         }
+
+        /// <summary>
+        /// Creates a GameTree from the given string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        public static GameTree FromString(string input) {
+            var tokens = SgfParser.Tokenize(input).ToList();
+            return SgfParser.Parse(tokens);
+        }
+
+        /// <summary>
+        /// Creates a GameTree from the specified file.
+        /// </summary>
+        /// <param name="path">The path of the file.</param>
+        public static GameTree FromFile(string path) {
+            string input = File.ReadAllText(path);
+            return GameTree.FromString(input);
+        }
     }
 }
