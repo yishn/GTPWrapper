@@ -27,12 +27,12 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
-        /// Returns the element at the given global index, traveling down a subtree if necessary.
+        /// Returns a linear list of the elements in the tree as IEnumerable.
         /// </summary>
-        /// <param name="index">The global index of the element.</param>
-        public T ElementAt(int index) {
-            if (Elements.Count > index) return this.Elements[index];
-            return this.SubTrees[0].ElementAt(index - Elements.Count);
+        public IEnumerable<T> AsEnumerable() {
+            foreach (T element in this.Elements) yield return element;
+            if (this.SubTrees.Count == 0) yield break;
+            foreach (T element in this.SubTrees[0].AsEnumerable()) yield return element;
         }
     }
 }
