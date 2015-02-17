@@ -118,7 +118,7 @@ namespace GTPWrapper.Sgf {
             foreach (Tuple<TokenType, string> token in nodeTokens) {
                 if (token.Item1 == TokenType.Semicolon) {
                     node = new Node();
-                    tree.Nodes.Add(node);
+                    tree.Elements.Add(node);
                 } else if (token.Item1 == TokenType.PropIdent) {
                     property = new SgfProperty(token.Item2, new List<string>());
                     node.Properties.Add(property);
@@ -141,7 +141,7 @@ namespace GTPWrapper.Sgf {
                     depth--;
 
                     if (depth == 0) {
-                        tree.GameTrees.Add(Parse(subtokens));
+                        tree.SubTrees.Add(Parse(subtokens));
                         subtokens.Clear();
                         continue;
                     }
