@@ -223,9 +223,7 @@ namespace GTPWrapper {
                 case "play":
                     try {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
-                        MoveHistory.Push(Tuple.Create(move, this.Board));
-
-                        this.Board = this.Board.MakeMove(move, this.AllowSuicide);
+                        this.Play(move);
                         return new Response(command);
                     } catch(FormatException) {
                         return new Response(command, "syntax error", true);
@@ -240,9 +238,7 @@ namespace GTPWrapper {
                         if (vertex.HasValue) {
                             // Make move and add to move history
                             Move move = new Move(color, vertex.Value);
-                            MoveHistory.Push(Tuple.Create(move, this.Board));
-
-                            this.Board = this.Board.MakeMove(move, this.AllowSuicide);
+                            this.Play(move);
                         }
 
                         return new Response(command, vertex.HasValue ? vertex.ToString() : "resign");
@@ -264,6 +260,15 @@ namespace GTPWrapper {
             }
 
             return new Response(command, "unknown command", true);
+        }
+
+        /// <summary>
+        /// Plays the specified move and adds it to the move history. Corresponds to 'play'.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        public void Play(Move move) {
+            MoveHistory.Push(Tuple.Create(move, this.Board));
+            this.Board = this.Board.MakeMove(move, this.AllowSuicide);
         }
 
         /// <summary>
