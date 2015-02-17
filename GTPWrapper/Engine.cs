@@ -27,20 +27,23 @@ namespace GTPWrapper {
         /// <summary>
         /// Gets the list of supported command names.
         /// </summary>
-        public List<string> SupportedCommands;
+        public List<string> SupportedCommands { get; private set; }
         /// <summary>
         /// Gets the queue which contains all unfinished commands
         /// </summary>
-        public Queue<Command> CommandQueue;
+        public Queue<Command> CommandQueue { get; private set; }
         /// <summary>
         /// Gets the list of all available responses.
         /// </summary>
-        public Dictionary<Command, Response> ResponseList;
+        public Dictionary<Command, Response> ResponseList { get; private set; }
         /// <summary>
         /// Gets a list of past moves.
         /// </summary>
-        public Stack<Tuple<Move, Board>> MoveHistory;
-
+        public Stack<Tuple<Move, Board>> MoveHistory { get; private set; }
+        /// <summary>
+        /// Determines whether suicide is allowed or not.
+        /// </summary>
+        public bool AllowSuicide { get; set; }
         /// <summary>
         /// Gets or sets the name of the engine.
         /// </summary>
@@ -76,6 +79,7 @@ namespace GTPWrapper {
                 "play", "genmove", "undo", "showboard"
             });
 
+            this.AllowSuicide = false;
             this.Name = name;
             this.Version = version;
             this.Enabled = true;
@@ -221,7 +225,7 @@ namespace GTPWrapper {
                         Move move = Move.Parse(string.Join(" ", command.Arguments));
                         MoveHistory.Push(Tuple.Create(move, this.Board));
 
-                        this.Board = this.Board.MakeMove(move);
+                        this.Board = this.Board.MakeMove(move, this.AllowSuicide);
                         return new Response(command);
                     } catch(FormatException) {
                         return new Response(command, "syntax error", true);
@@ -238,7 +242,7 @@ namespace GTPWrapper {
                             Move move = new Move(color, vertex.Value);
                             MoveHistory.Push(Tuple.Create(move, this.Board));
 
-                            this.Board = this.Board.MakeMove(move);
+                            this.Board = this.Board.MakeMove(move, this.AllowSuicide);
                         }
 
                         return new Response(command, vertex.HasValue ? vertex.ToString() : "resign");
