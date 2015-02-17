@@ -104,18 +104,22 @@ namespace GTPWrapper.Sgf {
         }
 
         /// <summary>
-        /// Returns the corresponding game tree of a token list.
+        /// Returns the corresponding game tree of a certain range in the given token list.
         /// </summary>
         /// <param name="tokens">The token list.</param>
-        public static GameTree Parse(IEnumerable<Tuple<TokenType, string>> tokens) {
-            var nodeTokens = tokens.TakeWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
-            var remaining = tokens.SkipWhile(x => x.Item1 != TokenType.Parenthesis && x.Item2 != "(");
+        /// <param name="start">The start index.</param>
+        /// <param name="end">The end index.</param>
+        public static GameTree Parse(List<Tuple<TokenType, string>> tokens, int start = 0, int end = int.MaxValue) {
+            int i = start;
+            end = Math.Min(end, tokens.Count - 1);
 
             GameTree tree = new GameTree();
             Node node = new Node();
             SgfProperty property = new SgfProperty("", "");
 
-            foreach (Tuple<TokenType, string> token in nodeTokens) {
+            while (i <= end) {
+                Tuple<TokenType, string> token = tokens[i];
+
                 if (token.Item1 == TokenType.Semicolon) {
                     node = new Node();
                     tree.Elements.Add(node);
@@ -124,30 +128,30 @@ namespace GTPWrapper.Sgf {
                     node.Properties.Add(property);
                 } else if (token.Item1 == TokenType.CValueType) {
                     property.Values.Add(token.Item2);
+                } else if (token.Item1 == TokenType.Parenthesis && token.Item2 == "(") {
+                    break;
                 } else if (token.Item1 == TokenType.Parenthesis) {
                     throw new ParseException("Unexpected parenthesis.");
                 }
+
+                i++;
             }
 
-            List<Tuple<TokenType, string>> subtokens = new List<Tuple<TokenType, string>>();
             int depth = 0;
+            int newstart = 0;
 
-            foreach (Tuple<TokenType, string> token in remaining) {
+            while (i <= end) {
+                Tuple<TokenType, string> token = tokens[i];
+
                 if (token.Item1 == TokenType.Parenthesis && token.Item2 == "(") {
                     depth++;
-
-                    if (depth == 1) continue;
+                    if (depth == 1) newstart = i + 1;
                 } else if (token.Item1 == TokenType.Parenthesis && token.Item2 == ")") {
                     depth--;
-
-                    if (depth == 0) {
-                        tree.SubTrees.Add(Parse(subtokens));
-                        subtokens.Clear();
-                        continue;
-                    }
+                    if (depth == 0) tree.SubTrees.Add(Parse(tokens, newstart, i - 1));
                 }
 
-                subtokens.Add(token);
+                i++;
             }
 
             return tree;
