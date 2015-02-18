@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace GTPWrapper.DataTypes {
-    public class ListTree<T> {
+    public class ListTree<T> : IEnumerable<T> {
         /// <summary>
         /// Gets or sets the list of elements of this tree.
         /// </summary>
@@ -38,12 +39,26 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
-        /// Returns a linear list of the elements in the tree as IEnumerable.
+        /// Returns a linear list of the elements in the tree as enumerable.
         /// </summary>
-        public IEnumerable<T> AsEnumerable() {
+        private IEnumerable<T> AsEnumerable() {
             foreach (T element in this.Elements) yield return element;
             if (this.CurrentSubTree == null) yield break;
             foreach (T element in this.CurrentSubTree.AsEnumerable()) yield return element;
+        }
+
+        /// <summary>
+        /// Returns a linear list of the elements in the tree as enumerator.
+        /// </summary>
+        public IEnumerator<T> GetEnumerator() {
+            return this.AsEnumerable().GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns a linear list of the elements in the tree as enumerator.
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator() {
+            return this.GetEnumerator();
         }
     }
 }
