@@ -19,7 +19,7 @@ namespace GTPWrapper.Sgf {
         /// <summary>
         /// Initializes a new instance of the GameTree class with the given node list.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">The list.</param>
         public GameTree(List<Node> list) : base(list) { }
 
         /// <summary>
