@@ -13,6 +13,16 @@ namespace GTPWrapper.DataTypes {
         /// Gets or sets the list of subtrees of this tree.
         /// </summary>
         public List<ListTree<T>> SubTrees { get; set; }
+        /// <summary>
+        /// Gets or sets the index of the current sub tree.
+        /// </summary>
+        public int CurrentSubTreeIndex { get; set; }
+        /// <summary>
+        /// Gets the current sub tree.
+        /// </summary>
+        public ListTree<T> CurrentSubTree { 
+            get { return CurrentSubTreeIndex < SubTrees.Count ? SubTrees[CurrentSubTreeIndex] : null; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the ListTreeNode class with an empty list.
@@ -24,6 +34,7 @@ namespace GTPWrapper.DataTypes {
         public ListTree(List<T> list) {
             this.Elements = list;
             this.SubTrees = new List<ListTree<T>>();
+            this.CurrentSubTreeIndex = 0;
         }
 
         /// <summary>
@@ -31,8 +42,8 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         public IEnumerable<T> AsEnumerable() {
             foreach (T element in this.Elements) yield return element;
-            if (this.SubTrees.Count == 0) yield break;
-            foreach (T element in this.SubTrees[0].AsEnumerable()) yield return element;
+            if (this.CurrentSubTree == null) yield break;
+            foreach (T element in this.CurrentSubTree.AsEnumerable()) yield return element;
         }
     }
 }
