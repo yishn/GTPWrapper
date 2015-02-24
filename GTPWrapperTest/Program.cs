@@ -1,4 +1,6 @@
 ﻿using GTPWrapper;
+using GTPWrapper.DataTypes;
+using GTPWrapper.Sgf;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -14,7 +14,10 @@ namespace GTPWrapper.Sgf {
 
         public static Vertex SgfToVertex(this Board board, string sgfVertex) {
             if (sgfVertex == "" || board.Size <= 19 && sgfVertex == "tt") return Vertex.Pass;
-            return new Vertex(Vertex.Letters.IndexOf(sgfVertex[0]) + 1, board.Size - Vertex.Letters.IndexOf(sgfVertex[1]));
+            return new Vertex(
+                Vertex.Letters.IndexOf(sgfVertex[0].ToString().ToUpper()) + 1, 
+                board.Size - Vertex.Letters.IndexOf(sgfVertex[1].ToString().ToUpper())
+            );
         }
     }
 }
