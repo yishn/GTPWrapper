@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GTPWrapper.Sgf {
+    /// <summary>
+    /// Provides SGF extension methods for the game of Go.
+    /// </summary>
     public static class GoExtensions {
         /// <summary>
         /// Converts given vertex on given board into SGF coordinates.
