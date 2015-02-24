@@ -55,7 +55,7 @@
     <Compile Include="Sgf\ParseException.cs" />
     <Compile Include="Sgf\SgfParser.cs" />
     <Compile Include="Sgf\SgfProperty.cs" />
-    <Compile Include="Sgf\VertexExtensions.cs" />
+    <Compile Include="Sgf\GoExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
