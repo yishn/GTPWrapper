@@ -223,11 +223,7 @@ namespace GTPWrapper.DataTypes {
             
             Board result = this + diff;
 
-            for (int i = -1; i <= 1; i++) {
-                if (!this.Captures.ContainsKey(i)) continue;
-                result.Captures[i] = this.Captures[i];
-            }
-
+            result.Captures = new Dictionary<Sign, int>(this.Captures);
             result.Captures[sign] += diff.Arrangement
                 .Where(pair => pair.Value == sign && pair.Key != vertex)
                 .Count();
