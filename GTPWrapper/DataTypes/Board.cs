@@ -10,7 +10,7 @@ namespace GTPWrapper.DataTypes {
     /// </summary>
     public class Board {
         private Dictionary<Vertex, Vertex> ChainAnchor = new Dictionary<Vertex, Vertex>();
-        private Dictionary<Vertex, IEnumerable<Vertex>> Liberties = new Dictionary<Vertex, IEnumerable<Vertex>>();
+        private Dictionary<Vertex, List<Vertex>> Liberties = new Dictionary<Vertex, List<Vertex>>();
 
         /// <summary>
         /// Contains pairs of vertex and signs.
@@ -104,7 +104,7 @@ namespace GTPWrapper.DataTypes {
         /// Gets the list of liberties of the chain represented by the given vertex.
         /// </summary>
         /// <param name="vertex">A vertex which represents the chain.</param>
-        public IEnumerable<Vertex> GetLiberties(Vertex vertex) {
+        public List<Vertex> GetLiberties(Vertex vertex) {
             if (GetSign(vertex) == 0) return new List<Vertex>();
 
             // If calculated already, load from Liberties
@@ -119,7 +119,7 @@ namespace GTPWrapper.DataTypes {
                 liberties = liberties.Union(GetNeighborhood(c).Where(x => this[x] == 0));
             }
 
-            Liberties[ChainAnchor[vertex]] = liberties;
+            Liberties[ChainAnchor[vertex]] = liberties.ToList();
             return Liberties[ChainAnchor[vertex]];
         }
 
@@ -179,12 +179,7 @@ namespace GTPWrapper.DataTypes {
         /// <param name="move">The move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
         public bool IsLegal(Move move, bool allowSuicide = false) {
-            try {
-                this.MakeMove(move, allowSuicide);
-                return true;
-            } catch (InvalidOperationException) {
-                return false;
-            }
+            return this.MakeMove(move, allowSuicide) == null;
         }
 
         /// <summary>
@@ -196,7 +191,7 @@ namespace GTPWrapper.DataTypes {
         }
 
         /// <summary>
-        /// Returns a new Board that represents the given Move.
+        /// Returns a new Board that represents the given Move or null if the move is invalid.
         /// </summary>
         /// <param name="move">The corresponding move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
@@ -211,14 +206,14 @@ namespace GTPWrapper.DataTypes {
                 return newboard;
             }
 
-            if (!this.HasVertex(vertex) || this[vertex] != 0) throw new InvalidOperationException("Illegal move.");
+            if (!this.HasVertex(vertex) || this[vertex] != 0) return null;
 
             diff[vertex] = sign;
             bool suicide = true;
 
             foreach (Vertex v in this.GetNeighborhood(vertex)) {
                 if (this[v] != -sign) continue;
-                if (this.GetLiberties(v).Count() != 1) continue;
+                if (this.GetLiberties(v).Count != 1) continue;
                 if (!this.GetLiberties(v).Contains(vertex)) continue;
 
                 foreach (Vertex c in this.GetChain(v)) {
@@ -232,11 +227,11 @@ namespace GTPWrapper.DataTypes {
             if (suicide) {
                 this[vertex] = sign;
                 IEnumerable<Vertex> chain = this.GetChain(vertex);
-                suicide = this.GetLiberties(vertex).Count() == 0;
+                suicide = this.GetLiberties(vertex).Count == 0;
                 this[vertex] = 0;
 
                 if (suicide) {
-                    if (!allowSuicide) throw new InvalidOperationException("Suicidal move.");
+                    if (!allowSuicide) return null;
                     foreach (Vertex v in chain) {
                         diff[v] = -this[v];
                     }
