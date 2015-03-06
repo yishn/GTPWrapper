@@ -25,9 +25,16 @@ namespace GTPWrapperTest {
 
         protected override Vertex? GenerateMove(Color color) {
             List<Vertex> list = Board.GetVertices(Color.Empty).ToList();
-            if (list.Count == 0) return null;
+            Vertex v = Vertex.Pass;
 
-            Vertex v = list[random.Next(1, list.Count)];
+            while (v == Vertex.Pass || !this.IsLegal(new Move(color, v))) {
+                if (list.Count == 0) return Vertex.Pass;
+                int i = random.Next(0, list.Count);
+
+                v = list[i];
+                list.RemoveAt(i);
+            }
+
             return v;
         }
     }
