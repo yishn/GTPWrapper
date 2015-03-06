@@ -268,7 +268,10 @@ namespace GTPWrapper {
         /// <param name="move">The move.</param>
         public void Play(Move move) {
             MoveHistory.Push(Tuple.Create(move, this.Board));
-            this.Board = this.Board.MakeMove(move, this.AllowSuicide);
+            Board board = this.Board.MakeMove(move, this.AllowSuicide);
+
+            if (board == null) throw new InvalidOperationException("Illegal move.");
+            this.Board = board;
         }
 
         /// <summary>
