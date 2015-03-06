@@ -24,18 +24,10 @@ namespace GTPWrapperTest {
         }
 
         protected override Vertex? GenerateMove(Color color) {
-            List<Vertex> list = Board.GetVertices(Color.Empty).ToList();
-            Vertex v = Vertex.Pass;
+            IEnumerable<Vertex> list = Board.GetLegalVertices(color, this.AllowSuicide);
+            if (list.Count() == 0) return Vertex.Pass;
 
-            while (v == Vertex.Pass || !this.IsLegal(new Move(color, v))) {
-                if (list.Count == 0) return Vertex.Pass;
-                int i = random.Next(0, list.Count);
-
-                v = list[i];
-                list.RemoveAt(i);
-            }
-
-            return v;
+            return list.ElementAt(random.Next(0, list.Count()));
         }
     }
 }

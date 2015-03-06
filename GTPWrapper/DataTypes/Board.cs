@@ -164,6 +164,28 @@ namespace GTPWrapper.DataTypes {
 
             return this.GetVertices().Where(v => this[v] == 0);
         }
+        /// <summary>
+        /// Get a list of those vertices which induces a legal move on the board.
+        /// </summary>
+        /// <param name="color">The color of the move.</param>
+        /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
+        public IEnumerable<Vertex> GetLegalVertices(Color color, bool allowSuicide = false) {
+            return this.GetVertices(0).Where(v => this.IsLegal(new Move(color, v), allowSuicide));
+        }
+
+        /// <summary>
+        /// Returns whether the given move is legal on the board.
+        /// </summary>
+        /// <param name="move">The move.</param>
+        /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
+        public bool IsLegal(Move move, bool allowSuicide = false) {
+            try {
+                this.MakeMove(move, allowSuicide);
+                return true;
+            } catch (InvalidOperationException) {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Clears the board.

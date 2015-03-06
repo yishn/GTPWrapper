@@ -272,22 +272,11 @@ namespace GTPWrapper {
         }
 
         /// <summary>
-        /// Returns whether the given move is legal on the current board arrangement.
+        /// Returns whether the given move is legal on the current board.
         /// </summary>
         /// <param name="move">The move.</param>
-        public bool IsLegal(Move move) { return IsLegal(move, this.Board); }
-        /// <summary>
-        /// Returns whether the given move is legal on the given board.
-        /// </summary>
-        /// <param name="move">The move.</param>
-        /// <param name="board">The board.</param>
-        public bool IsLegal(Move move, Board board) {
-            try {
-                this.Board.MakeMove(move, this.AllowSuicide);
-                return true;
-            } catch (InvalidOperationException) {
-                return false;
-            }
+        public bool IsLegal(Move move) {
+            return this.Board.IsLegal(move, this.AllowSuicide);
         }
 
         /// <summary>
