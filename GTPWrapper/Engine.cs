@@ -198,7 +198,7 @@ namespace GTPWrapper {
                             return new Response(command, "invalid number of stones", true);
 
                         foreach (Vertex v in Board.GetHandicapPlacement(count)) {
-                            Board.SetSign(v, 1);
+                            Board[v] = 1;
                         }
                         return new Response(command);
                     } catch {}
@@ -215,7 +215,7 @@ namespace GTPWrapper {
                             vs.Add(v);
                         }
 
-                        foreach (Vertex v in vs) this.Board.SetSign(v, 1);
+                        foreach (Vertex v in vs) this.Board[v] = 1;
                         return new Response(command);
                     } catch {}
 
