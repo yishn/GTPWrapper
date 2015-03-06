@@ -179,7 +179,7 @@ namespace GTPWrapper.DataTypes {
         /// <param name="move">The move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
         public bool IsLegal(Move move, bool allowSuicide = false) {
-            return this.MakeMove(move, allowSuicide) == null;
+            return this.MakeMove(move, allowSuicide) != null;
         }
 
         /// <summary>
