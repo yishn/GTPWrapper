@@ -183,7 +183,12 @@ namespace GTPWrapper.DataTypes {
             Vertex vertex = move.Vertex;
             Sign sign = move.Color;
 
-            if (vertex == Vertex.Pass) return this + new Board(this.Size);
+            if (vertex == Vertex.Pass) {
+                Board newboard = this + new Board(this.Size);
+                newboard.Captures = new Dictionary<Sign, int>(this.Captures);
+                return newboard;
+            }
+
             if (!this.HasVertex(vertex) || this[vertex] != 0) throw new InvalidOperationException("Illegal move.");
 
             diff[vertex] = sign;
