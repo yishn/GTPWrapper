@@ -13,6 +13,9 @@ namespace GTPWrapper.DataTypes {
         /// The letters in a vertex string, i.e. the letters A to Z, excluding I.
         /// </summary>
         public static string Letters = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+        /// <summary>
+        /// The pass vertex.
+        /// </summary>
         public static Vertex Pass = new Vertex(0, 0);
 
         /// <summary>
