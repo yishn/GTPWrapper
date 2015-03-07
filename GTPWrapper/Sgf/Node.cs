@@ -25,10 +25,18 @@ namespace GTPWrapper.Sgf {
         /// </summary>
         public Node() : this(new List<SgfProperty>()) { }
 
-        public SgfProperty this[string ident] {
-            get { return Properties.FirstOrDefault(x => x.Identifier == ident); }
+        /// <summary>
+        /// Returns whether a property with the given identifier exists.
+        /// </summary>
+        /// <param name="identifier">The identifier.</param>
+        public bool HasProperty(string identifier) {
+            return Properties.Where(x => x.Identifier == identifier).Count() != 0;
+        }
+
+        public SgfProperty this[string identifier] {
+            get { return Properties.First(x => x.Identifier == identifier); }
             set {
-                SgfProperty property = Properties.FirstOrDefault(x => x.Identifier == ident);
+                SgfProperty property = Properties.FirstOrDefault(x => x.Identifier == identifier);
                 if (property != null) Properties.Remove(property);
                 Properties.Add(value);
             }
