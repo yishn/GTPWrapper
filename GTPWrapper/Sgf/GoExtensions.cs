@@ -38,5 +38,22 @@ namespace GTPWrapper.Sgf {
                 board.Size - Letters.IndexOf(sgfVertex[1].ToString().ToLower())
             );
         }
+
+        /// <summary>
+        /// Convert the given game tree into an IEnumerable of boards with respect to the given base board.
+        /// </summary>
+        /// <param name="tree">The game tree.</param>
+        /// <param name="baseBoard">The base board.</param>
+        public static IEnumerable<Board> ToBoardList(this GameTree tree, Board baseBoard) {
+            Board board = baseBoard;
+
+            foreach (Node node in tree.Elements) {
+                Color color = node.HasProperty("W") ? Color.W : node.HasProperty("B") ? Color.B : Color.E;
+                if (color == Color.E) continue;
+
+                board = board.MakeMove(new Move(color, board.SgfToVertex(node[color.ToString()].Value)));
+                yield return board;
+            }
+        }
     }
 }
