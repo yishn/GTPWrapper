@@ -38,18 +38,18 @@ namespace GTPWrapper.Sgf {
         public SgfProperty(string identifier, string value) : this(identifier, new string[] { value }.ToList()) { }
 
         /// <summary>
+        /// Returns a string which represents the object.
+        /// </summary>
+        public override string ToString() {
+            return this.Identifier + "[" + string.Join("][", this.Values.Select(x => SgfProperty.Escape(x))) + "]";
+        }
+
+        /// <summary>
         /// Escapes a minimal set of characters (\, ]) by replacing them with their escape codes.
         /// </summary>
         /// <param name="input">The input string.</param>
         public static string Escape(string input) {
             return input.Replace(@"\", @"\\").Replace(@"]", @"\]");
-        }
-
-        /// <summary>
-        /// Returns a string which represents the object.
-        /// </summary>
-        public override string ToString() {
-            return this.Identifier + "[" + string.Join("][", this.Values.Select(x => SgfProperty.Escape(x))) + "]";
         }
     }
 }
