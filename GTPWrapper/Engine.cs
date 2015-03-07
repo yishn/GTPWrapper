@@ -279,7 +279,7 @@ namespace GTPWrapper {
         /// </summary>
         /// <param name="move">The move.</param>
         public bool IsLegal(Move move) {
-            return this.Board.IsLegal(move, this.AllowSuicide);
+            return this.Board.IsMoveLegal(move, this.AllowSuicide);
         }
 
         /// <summary>

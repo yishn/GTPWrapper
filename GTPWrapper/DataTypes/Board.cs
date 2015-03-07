@@ -169,8 +169,8 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="color">The color of the move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
-        public IEnumerable<Vertex> GetLegalVertices(Color color, bool allowSuicide = false) {
-            return this.GetVertices(0).Where(v => this.IsLegal(new Move(color, v), allowSuicide));
+        public IEnumerable<Vertex> GetLegalVertices(Color color, bool allowSuicide = true) {
+            return this.GetVertices(0).Where(v => this.IsMoveLegal(new Move(color, v), allowSuicide));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace GTPWrapper.DataTypes {
         /// </summary>
         /// <param name="move">The move.</param>
         /// <param name="allowSuicide">Determines whether suicide is allowed or not.</param>
-        public bool IsLegal(Move move, bool allowSuicide = false) {
+        public bool IsMoveLegal(Move move, bool allowSuicide = true) {
             return this.MakeMove(move, allowSuicide) != null;
         }
 
