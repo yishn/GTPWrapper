@@ -13,7 +13,7 @@ namespace GTPWrapper.Sgf {
         /// <summary>
         /// The letters in a SGF vertex string, i.e. the letters a to z.
         /// </summary>
-        public static string Letters = "abcdefghijklmnopqrstuvwxyz";
+        public static string Letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         /// <summary>
         /// Converts given vertex on given board into SGF coordinates.
