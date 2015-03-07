@@ -34,8 +34,8 @@ namespace GTPWrapper.Sgf {
             if (sgfVertex.Length > 2) throw new FormatException("Wrong SGF vertex format.");
             if (sgfVertex == "" || board.Size <= 19 && sgfVertex == "tt") return Vertex.Pass;
             return new Vertex(
-                Letters.IndexOf(sgfVertex[0].ToString().ToLower()) + 1, 
-                board.Size - Letters.IndexOf(sgfVertex[1].ToString().ToLower())
+                Letters.IndexOf(sgfVertex[0].ToString()) + 1, 
+                board.Size - Letters.IndexOf(sgfVertex[1].ToString())
             );
         }
 
