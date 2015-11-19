@@ -4,17 +4,17 @@ GTPWrapper
 [![Build status](https://ci.appveyor.com/api/projects/status/gasm5yiawhpcmp5x?svg=true)](https://ci.appveyor.com/project/yishn/gtpwrapper)
 
 ```
-                                                    A B C D E F G H J
-                                                  9 X X X X X X O . . 9
-                                                  8 O O O X X O . O O 8
-                                                  7 O . O O X O O O X 7
-                                                  6 . O O X X O O X X 6
-                                                  5 O O X . X O X . X 5
-                                                  4 X X X X X O X X . 4
-                                                  3 . O O X O O O X X 3
-                                                  2 . X X O . O . O X 2
-                                                  1 . . X O O . O O X 1
-                                                    A B C D E F G H J
+                                              A B C D E F G H J
+                                            9 X X X X X X O . . 9
+                                            8 O O O X X O . O O 8
+                                            7 O . O O X O O O X 7
+                                            6 . O O X X O O X X 6
+                                            5 O O X . X O X . X 5
+                                            4 X X X X X O X X . 4
+                                            3 . O O X O O O X X 3
+                                            2 . X X O . O . O X 2
+                                            1 . . X O O . O O X 1
+                                              A B C D E F G H J
 ```
 
 The Go Text Protocol or GTP is used by Go playing engines to communicate between computers or humans. GTPWrapper is a C# library for creating GTP engines. This library implements [GTP Version 2 Specification Draft](http://www.lysator.liu.se/~gunnar/gtp/).
